@@ -1,0 +1,13 @@
+version: "3.6"
+
+services:
+  postgres_dev_db:
+    container_name: postgres_dev_db
+    image: postgres:15.1-alpine
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dev_db

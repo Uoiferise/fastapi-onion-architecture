@@ -1,0 +1,14 @@
+# created by virtualenv automatically
+*idea
+
+/venv
+
+/.mypy_cache
+
+/.pytest_cache
+
+.env
+.test.env
+
+logs.json
+src/logs.json
