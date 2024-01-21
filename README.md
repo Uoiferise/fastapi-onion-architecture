@@ -1,5 +1,6 @@
 # FastAPI Onion Architecture example
 
+### Python 3.11
 ### First thing to do:
 - Create a virtual environment using the command: `python -m venv venv`
 - Activate virtual environment
