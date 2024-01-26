@@ -39,7 +39,7 @@ DB_PORT=5433
 DB_NAME=dev_db
 ```
 - The parameters must match the file `docker-compose.development.yaml`, if you plan to build the database in Docker.
-  - For building container: `docker-compose -f docker-compose.development.yaml up --build`
+  - For building container: `dev_ops/docker-compose -f docker-compose.development.yaml up --build`
 
 **.test.env**
 
@@ -52,4 +52,4 @@ DB_PORT=5434
 DB_NAME=test_db
 ```
 - The parameters must match the file `docker-compose.test.yaml`, if you plan to build the database in Docker.
--   - For building container: `docker-compose -f docker-compose.test.yaml up --build`
+-   - For building container: `dev_ops/docker-compose -f docker-compose.test.yaml up --build`
