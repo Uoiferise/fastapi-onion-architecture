@@ -19,7 +19,7 @@ class TestSqlAlchemyRepository:
         model = UserModel
 
     async def test_add_one(
-        self, clean_users, users, get_users, comparing_two_lists, async_session
+        self, clean_users, users, get_users, comparing_two_sequence, async_session
     ):
         await clean_users()
         sql_alchemy_repository = self._SqlAlchemyRepository(session=async_session)
@@ -28,13 +28,13 @@ class TestSqlAlchemyRepository:
             await sql_alchemy_repository.session.commit()
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(
+        assert comparing_two_sequence(
             users, [user.to_pydantic_schema() for user in users_in_db]
         )
         await async_session.close()
 
     async def test_add_one_and_get_id(
-        self, clean_users, users, get_users, comparing_two_lists, async_session
+        self, clean_users, users, get_users, comparing_two_sequence, async_session
     ):
         await clean_users()
         sql_alchemy_repository = self._SqlAlchemyRepository(session=async_session)
@@ -46,13 +46,13 @@ class TestSqlAlchemyRepository:
             assert user_schema.id == user_id
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(
+        assert comparing_two_sequence(
             users, [user.to_pydantic_schema() for user in users_in_db]
         )
         await async_session.close()
 
     async def test_add_one_and_get_obj(
-        self, clean_users, users, get_users, comparing_two_lists, async_session
+        self, clean_users, users, get_users, comparing_two_sequence, async_session
     ):
         await clean_users()
         sql_alchemy_repository = self._SqlAlchemyRepository(session=async_session)
@@ -64,7 +64,7 @@ class TestSqlAlchemyRepository:
             assert user_schema == user_in_db.to_pydantic_schema()
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(
+        assert comparing_two_sequence(
             users, [user.to_pydantic_schema() for user in users_in_db]
         )
         await async_session.close()
@@ -105,7 +105,7 @@ class TestSqlAlchemyRepository:
         expectation,
         clean_users,
         add_users,
-        comparing_two_lists,
+        comparing_two_sequence,
         async_session,
     ):
         await clean_users()
@@ -122,7 +122,7 @@ class TestSqlAlchemyRepository:
                 else [user.to_pydantic_schema() for user in users_in_db]
             )
             if result:
-                assert comparing_two_lists(result, expected_result)
+                assert comparing_two_sequence(result, expected_result)
             else:
                 assert result == expected_result
         await async_session.close()
@@ -138,7 +138,7 @@ class TestSqlAlchemyRepository:
         expectation,
         clean_users,
         add_users,
-        comparing_two_lists,
+        comparing_two_sequence,
         async_session,
     ):
         await clean_users()
@@ -166,7 +166,7 @@ class TestSqlAlchemyRepository:
         clean_users,
         add_users,
         get_users,
-        comparing_two_lists,
+        comparing_two_sequence,
         async_session,
     ):
         await clean_users()
@@ -176,7 +176,7 @@ class TestSqlAlchemyRepository:
             await sql_alchemy_repository.delete_by_query(**kwargs)
             await async_session.commit()
             users_in_db: Sequence[UserModel] = await get_users()
-            assert comparing_two_lists(
+            assert comparing_two_sequence(
                 expected_result, [user.to_pydantic_schema() for user in users_in_db]
             )
         await async_session.close()
@@ -187,5 +187,5 @@ class TestSqlAlchemyRepository:
         sql_alchemy_repository = self._SqlAlchemyRepository(session=async_session)
         await sql_alchemy_repository.delete_all()
         await async_session.commit()
-        chats_in_db: list[Row] = await get_users()
-        assert chats_in_db == []
+        users_in_db: Sequence[UserModel] = await get_users()
+        assert users_in_db == []

@@ -19,7 +19,7 @@ class TestBaseService:
     class _BaseService(BaseService):
         base_repository = "user"
 
-    async def test_add_one(self, clean_users, users, get_users, comparing_two_lists):
+    async def test_add_one(self, clean_users, users, get_users, comparing_two_sequence):
         await clean_users()
         for user_schema in users:
             await self._BaseService.add_one(
@@ -27,12 +27,12 @@ class TestBaseService:
             )
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(
+        assert comparing_two_sequence(
             users, [user.to_pydantic_schema() for user in users_in_db]
         )
 
     async def test_add_one_and_get_id(
-        self, clean_users, users, get_users, comparing_two_lists
+        self, clean_users, users, get_users, comparing_two_sequence
     ):
         await clean_users()
         for user_schema in users:
@@ -42,12 +42,12 @@ class TestBaseService:
             assert user_schema.id == user_id
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(
+        assert comparing_two_sequence(
             users, [user.to_pydantic_schema() for user in users_in_db]
         )
 
     async def test_add_one_and_get_obj(
-        self, clean_users, users, get_users, comparing_two_lists
+        self, clean_users, users, get_users, comparing_two_sequence
     ):
         await clean_users()
         for user_schema in users:
@@ -57,7 +57,7 @@ class TestBaseService:
             assert user_schema == user_in_db.to_pydantic_schema()
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(
+        assert comparing_two_sequence(
             users, [user.to_pydantic_schema() for user in users_in_db]
         )
 
@@ -91,7 +91,7 @@ class TestBaseService:
         expectation,
         clean_users,
         add_users,
-        comparing_two_lists,
+        comparing_two_sequence,
     ):
         await clean_users()
         await add_users()
@@ -106,7 +106,7 @@ class TestBaseService:
                 else [user.to_pydantic_schema() for user in users_in_db]
             )
             if result:
-                assert comparing_two_lists(result, expected_result)
+                assert comparing_two_sequence(result, expected_result)
             else:
                 assert result == expected_result
 
@@ -121,7 +121,7 @@ class TestBaseService:
         expectation,
         clean_users,
         add_users,
-        comparing_two_lists,
+        comparing_two_sequence,
     ):
         await clean_users()
         await add_users()
@@ -144,7 +144,7 @@ class TestBaseService:
         clean_users,
         add_users,
         get_users,
-        comparing_two_lists,
+        comparing_two_sequence,
     ):
         await clean_users()
         await add_users()
@@ -152,7 +152,7 @@ class TestBaseService:
         with expectation:
             await self._BaseService.delete_by_query(uow=UnitOfWork(), **kwargs)
             users_in_db: Sequence[UserModel] = await get_users()
-            assert comparing_two_lists(
+            assert comparing_two_sequence(
                 expected_result, [user.to_pydantic_schema() for user in users_in_db]
             )
 
@@ -166,5 +166,5 @@ class TestBaseService:
         await add_users()
 
         await self._BaseService.delete_all(uow=UnitOfWork())
-        chats_in_db: list[Row] = await get_users()
+        chats_in_db: Sequence[UserModel] = await get_users()
         assert chats_in_db == []

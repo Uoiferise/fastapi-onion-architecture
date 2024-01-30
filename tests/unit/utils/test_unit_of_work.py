@@ -7,8 +7,9 @@ from src.utils.unit_of_work import UnitOfWork
 
 
 class TestUnitOfWork:
-
-    async def test_uow_commit(self, clean_users, users, get_users, comparing_two_lists):
+    async def test_uow_commit(
+        self, clean_users, users, get_users, comparing_two_sequence
+    ):
         await clean_users()
         uow = UnitOfWork()
         async with uow:
@@ -16,9 +17,11 @@ class TestUnitOfWork:
                 await uow.user.add_one(**user_schema.model_dump())
 
         users_in_db: Sequence[UserModel] = await get_users()
-        assert comparing_two_lists(users, [user.to_pydantic_schema() for user in users_in_db])
+        assert comparing_two_sequence(
+            users, [user.to_pydantic_schema() for user in users_in_db]
+        )
 
-    async def test_uow_rollback(self, clean_users, users, get_users, comparing_two_lists):
+    async def test_uow_rollback(self, clean_users, users, get_users):
         await clean_users()
         with pytest.raises(Exception):
             uow = UnitOfWork()
