@@ -43,13 +43,10 @@ ignore = [
     "ANN202", # Missing return type annotation for private function
     "ANN204", # Missing return type annotation for special method
     "ANN401", # Dynamically typed expressions are disallowed
-
     "B008", # Do not perform function call `Depends` in argument defaults
     "B904", # Within an `except` clause, raise exceptions with `raise`
     "BLE001", # Do not catch blind exception: `Exception`
-
     "CPY001", # Missing copyright notice at top of file
-
     "D100", # Missing docstring in public module
     "D101", # Missing docstring in public class
     "D102", # Missing docstring in public method
@@ -59,8 +56,6 @@ ignore = [
     "D107", # Missing docstring in `__init__`
     "D203", # One blank line before class
     "D213", # Multi line summary second line
-    "D415", # First line should end with a period, question mark, or exclamation point
-
     "FAST002", # FastAPI dependency without `Annotated`
     "I001", # Import block is un-sorted or un-formatted
     "INP001", # File is part of an implicit namespace package
@@ -70,7 +65,6 @@ ignore = [
     "RET505", # Unnecessary `else` after `return` statement
     "TCH001", # Move application import into a type-checking block
     "TCH002", # Move third-party import into a type-checking block
-    "UP035", # Import from `collections.abc` instead: `Sequence`
 ]
 
 [tool.ruff.lint.flake8-quotes]

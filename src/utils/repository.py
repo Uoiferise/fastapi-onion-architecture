@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Sequence
+from collections.abc import Sequence
 from uuid import uuid4
 
 from sqlalchemy import insert, select, update, delete
