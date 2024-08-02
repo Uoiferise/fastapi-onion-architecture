@@ -1,11 +1,11 @@
 import os
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import find_dotenv, load_dotenv
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from src.api import router
-from src.metadata import TITLE, DESCRIPTION, VERSION, TAG_METADATA
+from src.metadata import DESCRIPTION, TAG_METADATA, TITLE, VERSION
 
 
 def create_fast_api_app():

@@ -1,8 +1,8 @@
-from uuid import uuid4
 from datetime import datetime
 from typing import Annotated
+from uuid import uuid4
 
-from sqlalchemy import DateTime, UUID, Integer, String, text
+from sqlalchemy import UUID, DateTime, Integer, String, text
 from sqlalchemy.orm import mapped_column
 
 sql_utc_now = text("TIMEZONE('utc', now())")

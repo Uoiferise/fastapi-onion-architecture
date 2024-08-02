@@ -4,15 +4,15 @@ __all__ = [
 
 import asyncio
 
-from loguru import logger
 from fastapi import APIRouter, Depends, HTTPException
+from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import JSONResponse
 
+from src.api.v1.routers import v1_user_router
 from src.database.db import get_async_session
 from src.metadata import ERRORS_MAP
-from src.api.v1.routers import v1_user_router
 
 router = APIRouter()
 router.include_router(v1_user_router, prefix='/v1', tags=['v1'])

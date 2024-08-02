@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Mapped
 
 from src.models import BaseModel
-from src.models.mixins.custom_types import uuid_pk_T, created_at_T, updated_at_T, str_50_T, str_50_or_none_T
+from src.models.mixins.custom_types import created_at_T, str_50_or_none_T, str_50_T, updated_at_T, uuid_pk_T
 from src.schemas.user import UserSchema
 
 

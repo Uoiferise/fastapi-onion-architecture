@@ -1,5 +1,5 @@
-from typing import Any
 from collections.abc import Sequence
+from typing import Any
 from uuid import uuid4
 
 from src.utils.unit_of_work import UnitOfWork

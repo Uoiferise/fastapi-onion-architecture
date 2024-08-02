@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from uuid import uuid4
 
-from sqlalchemy import insert, select, update, delete
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
