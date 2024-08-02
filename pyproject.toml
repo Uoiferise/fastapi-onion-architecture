@@ -26,3 +26,55 @@ pytest-dotenv = "^0.5.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+exclude = ["alembic/*", "tests/*"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["ALL"]
+extend-select = ["W", "E"]
+preview = true
+ignore = [
+    "ANN001", # Missing type annotation for function argument
+    "ANN002", # Missing type annotation for `*args`
+    "ANN003", # Missing type annotation for `**kwargs`
+    "ANN201", # Missing return type annotation for public function
+    "ANN202", # Missing return type annotation for private function
+    "ANN204", # Missing return type annotation for special method
+    "ANN401", # Dynamically typed expressions are disallowed
+
+    "B008", # Do not perform function call `Depends` in argument defaults
+    "B904", # Within an `except` clause, raise exceptions with `raise`
+    "BLE001", # Do not catch blind exception: `Exception`
+
+    "C408", # Unnecessary `tuple` call (rewrite as a literal)
+    "COM812", # Trailing comma missing
+    "CPY001", # Missing copyright notice at top of file
+
+    "D100", # Missing docstring in public module
+    "D101", # Missing docstring in public class
+    "D102", # Missing docstring in public method
+    "D103", # Missing docstring in public function
+    "D104", # Missing docstring in public package
+    "D105", # Missing docstring in magic method
+    "D107", # Missing docstring in `__init__`
+    "D203", # One blank line before class
+    "D212", # Multi-line docstring summary should start at the first line
+    "D400", # First line should end with a period
+    "D415", # First line should end with a period, question mark, or exclamation point
+
+    "FAST002", # FastAPI dependency without `Annotated`
+    "I001", # Import block is un-sorted or un-formatted
+    "INP001", # File is part of an implicit namespace package
+    "N802", # Function name should be lowercase
+    "N816", # Variable in global scope should not be mixedCase
+    "RET504", # Unnecessary assignment before `return` statement
+    "RET505", # Unnecessary `else` after `return` statement
+    "TCH001", # Move application import into a type-checking block
+    "TCH002", # Move third-party import into a type-checking block
+    "UP007", # Use `X | Y` for type annotations
+    "UP035", # Import from `collections.abc` instead: `Sequence`
+    "Q000", # Single quotes found but double quotes preferred
+]

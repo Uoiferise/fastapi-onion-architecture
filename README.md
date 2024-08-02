@@ -28,6 +28,9 @@
   - `pytest --maxfail=1 -vv -p no:warnings -k 'TestCaseName'`
   - `pytest --maxfail=1 -vv -p no:warnings --ignore=PathName`
 
+### Ruff commands:
+  - `ruff check . --config=pyproject.toml`
+
 ### Setting up environment variables:
 **.env**
 ```
