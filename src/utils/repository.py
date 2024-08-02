@@ -40,7 +40,7 @@ class AbstractRepository(ABC):
 
 
 class SqlAlchemyRepository(AbstractRepository):
-    """A basic repository that implements basic CRUD functions with a base table using the SqlAlchemy library
+    """A basic repository that implements basic CRUD functions with a base table using the SqlAlchemy library.
 
     params:
         - model: SQLAlchemy DeclarativeBase child class

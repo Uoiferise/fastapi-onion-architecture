@@ -29,7 +29,7 @@ class AbstractUnitOfWork(ABC):
 
 
 class UnitOfWork(AbstractUnitOfWork):
-    """The class responsible for the atomicity of transactions"""
+    """The class responsible for the atomicity of transactions."""
 
     def __init__(self):
         self.session_factory = async_session_maker
