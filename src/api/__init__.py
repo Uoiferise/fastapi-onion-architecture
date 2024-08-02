@@ -1,5 +1,5 @@
 __all__ = [
-    'router'
+    'router',
 ]
 
 import asyncio
@@ -34,5 +34,5 @@ async def health_check(session: AsyncSession = Depends(get_async_session)):
 
     return JSONResponse(
         status_code=200,
-        content={}
+        content={},
     )

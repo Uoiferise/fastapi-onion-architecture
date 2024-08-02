@@ -18,7 +18,7 @@ def create_fast_api_app():
             title=TITLE,
             description=DESCRIPTION,
             version=VERSION,
-            openapi_tags=TAG_METADATA
+            openapi_tags=TAG_METADATA,
         )
     else:
         _app = FastAPI(
@@ -28,7 +28,7 @@ def create_fast_api_app():
             version=VERSION,
             openapi_tags=TAG_METADATA,
             docs_url=None,
-            redoc_url=None
+            redoc_url=None,
         )
 
     _app.include_router(router, prefix='/api')

@@ -18,7 +18,7 @@ class BaseService:
     async def add_one(
             cls,
             uow: UnitOfWork,
-            **kwargs
+            **kwargs,
     ) -> None:
         async with uow:
             await uow.__dict__[cls.base_repository].add_one(**kwargs)
@@ -27,7 +27,7 @@ class BaseService:
     async def add_one_and_get_id(
             cls,
             uow: UnitOfWork,
-            **kwargs
+            **kwargs,
     ) -> Union[int, str]:
         async with uow:
             _id = await uow.__dict__[cls.base_repository].add_one_and_get_id(**kwargs)
@@ -37,7 +37,7 @@ class BaseService:
     async def add_one_and_get_obj(
             cls,
             uow: UnitOfWork,
-            **kwargs
+            **kwargs,
     ) -> Any:
         async with uow:
             _obj = await uow.__dict__[cls.base_repository].add_one_and_get_obj(**kwargs)
@@ -47,7 +47,7 @@ class BaseService:
     async def get_by_query_one_or_none(
             cls,
             uow: UnitOfWork,
-            **kwargs
+            **kwargs,
     ) -> Optional[Any]:
         async with uow:
             _result = await uow.__dict__[cls.base_repository].get_by_query_one_or_none(**kwargs)
@@ -57,7 +57,7 @@ class BaseService:
     async def get_by_query_all(
             cls,
             uow: UnitOfWork,
-            **kwargs
+            **kwargs,
     ) -> Sequence[Any]:
         async with uow:
             _result = await uow.__dict__[cls.base_repository].get_by_query_all(**kwargs)
@@ -68,7 +68,7 @@ class BaseService:
             cls,
             uow: UnitOfWork,
             _id: Union[int, str, uuid4],
-            values: dict
+            values: dict,
     ) -> Any:
         async with uow:
             _obj = await uow.__dict__[cls.base_repository].update_one_by_id(_id=_id, values=values)
@@ -78,7 +78,7 @@ class BaseService:
     async def delete_by_query(
             cls,
             uow: UnitOfWork,
-            **kwargs
+            **kwargs,
     ) -> None:
         async with uow:
             await uow.__dict__[cls.base_repository].delete_by_query(**kwargs)

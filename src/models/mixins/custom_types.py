@@ -16,7 +16,7 @@ created_at_T = Annotated[datetime, mapped_column(DateTime, server_default=sql_ut
 updated_at_T = Annotated[datetime, mapped_column(
     DateTime,
     server_default=sql_utc_now,
-    onupdate=sql_utc_now
+    onupdate=sql_utc_now,
 )]
 
 # String

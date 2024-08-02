@@ -1,6 +1,6 @@
 __all__ = [
     'BaseModel',
-    'UserModel'
+    'UserModel',
 ]
 
 from src.models.base import BaseModel

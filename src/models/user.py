@@ -20,5 +20,5 @@ class UserModel(BaseModel):
             id=self.id,
             first_name=self.first_name,
             last_name=self.last_name,
-            middle_name=self.middle_name
+            middle_name=self.middle_name,
         )

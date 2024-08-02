@@ -13,7 +13,7 @@ async_engine = create_async_engine(
     max_overflow=100,
     connect_args={
         'prepared_statement_name_func': lambda:  f'__asyncpg_{uuid4()}__',
-    }
+    },
 )
 
 async_session_maker = async_sessionmaker(
