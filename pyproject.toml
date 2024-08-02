@@ -74,5 +74,10 @@ ignore = [
     "TCH002", # Move third-party import into a type-checking block
     "UP007", # Use `X | Y` for type annotations
     "UP035", # Import from `collections.abc` instead: `Sequence`
-    "Q000", # Single quotes found but double quotes preferred
 ]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.lint.pylint]
+max-args = 7

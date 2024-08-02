@@ -9,7 +9,7 @@ from src.metadata import TITLE, DESCRIPTION, VERSION, TAG_METADATA
 
 
 def create_fast_api_app():
-    load_dotenv(find_dotenv(".env"))
+    load_dotenv(find_dotenv('.env'))
     env_name = os.getenv('MODE', 'DEV')
 
     if env_name != 'PROD':
