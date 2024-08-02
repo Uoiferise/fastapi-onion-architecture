@@ -1,4 +1,4 @@
-from typing import Optional, Union, Any, Sequence
+from typing import Any, Sequence
 from uuid import uuid4
 
 from src.utils.unit_of_work import UnitOfWork
@@ -28,7 +28,7 @@ class BaseService:
             cls,
             uow: UnitOfWork,
             **kwargs,
-    ) -> Union[int, str]:
+    ) -> int | str:
         async with uow:
             _id = await uow.__dict__[cls.base_repository].add_one_and_get_id(**kwargs)
             return _id
@@ -48,7 +48,7 @@ class BaseService:
             cls,
             uow: UnitOfWork,
             **kwargs,
-    ) -> Optional[Any]:
+    ) -> Any | None:
         async with uow:
             _result = await uow.__dict__[cls.base_repository].get_by_query_one_or_none(**kwargs)
             return _result
@@ -67,7 +67,7 @@ class BaseService:
     async def update_one_by_id(
             cls,
             uow: UnitOfWork,
-            _id: Union[int, str, uuid4],
+            _id: int | str | uuid4,
             values: dict,
     ) -> Any:
         async with uow:

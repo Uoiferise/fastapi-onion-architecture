@@ -17,7 +17,6 @@ black = "^23.12.1"
 ruff = "^0.5.5"
 greenlet = "^3.0.3"
 
-
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.4"
 pytest-asyncio = "^0.23.3"
@@ -72,7 +71,7 @@ ignore = [
     "RET505", # Unnecessary `else` after `return` statement
     "TCH001", # Move application import into a type-checking block
     "TCH002", # Move third-party import into a type-checking block
-    "UP007", # Use `X | Y` for type annotations
+#    "UP007", # Use `X | Y` for type annotations
     "UP035", # Import from `collections.abc` instead: `Sequence`
 ]
 
