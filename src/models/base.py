@@ -5,7 +5,7 @@ class BaseModel(DeclarativeBase):
     __abstract__ = True
 
     repr_cols_num = 3
-    repr_cols = tuple()
+    repr_cols = ()
 
     def __repr__(self):
         cols = []

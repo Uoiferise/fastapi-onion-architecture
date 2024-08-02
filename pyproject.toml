@@ -49,7 +49,6 @@ ignore = [
     "B904", # Within an `except` clause, raise exceptions with `raise`
     "BLE001", # Do not catch blind exception: `Exception`
 
-    "C408", # Unnecessary `tuple` call (rewrite as a literal)
     "CPY001", # Missing copyright notice at top of file
 
     "D100", # Missing docstring in public module
