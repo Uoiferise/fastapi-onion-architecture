@@ -57,12 +57,11 @@ ignore = [
     "D203", # One blank line before class
     "D213", # Multi line summary second line
     "FAST002", # FastAPI dependency without `Annotated`
-#    "I001", # Import block is un-sorted or un-formatted
     "INP001", # File is part of an implicit namespace package
     "N802", # Function name should be lowercase
     "N816", # Variable in global scope should not be mixedCase
     "RET504", # Unnecessary assignment before `return` statement
-    "RET505", # Unnecessary `else` after `return` statement
+#    "RET505", # Unnecessary `else` after `return` statement
     "TCH001", # Move application import into a type-checking block
     "TCH002", # Move third-party import into a type-checking block
 ]

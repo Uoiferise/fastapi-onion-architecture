@@ -39,5 +39,4 @@ async def delete_user(user_id: IdUserSchema, uow: UnitOfWork = Depends(UnitOfWor
     if await UserService.get_by_query_one_or_none(uow=uow, **user_id.model_dump()):
         await UserService.delete_by_query(uow=uow, **user_id.model_dump())
         return BaseWrapper()
-    else:
-        raise HTTPException(status_code=404, detail='User not found')
+    raise HTTPException(status_code=404, detail='User not found')
