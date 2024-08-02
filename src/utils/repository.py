@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from sqlalchemy import delete, insert, select, update
-from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine import Result
 
 
 class AbstractRepository(ABC):
