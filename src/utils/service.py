@@ -5,8 +5,7 @@ from src.utils.unit_of_work import UnitOfWork
 
 
 class BaseService:
-    """
-    A basic service for performing standard CRUD operations with the base repository.
+    """A basic service for performing standard CRUD operations with the base repository.
 
     params:
         - base_repository: should be string like AbstractUnitOfWork class params
