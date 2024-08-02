@@ -60,7 +60,6 @@ ignore = [
     "INP001", # File is part of an implicit namespace package
     "N802", # Function name should be lowercase
     "N816", # Variable in global scope should not be mixedCase
-    "TCH001", # Move application import into a type-checking block
     "TCH002", # Move third-party import into a type-checking block
 ]
 

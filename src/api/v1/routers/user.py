@@ -1,11 +1,15 @@
+from typing import TYPE_CHECKING
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import UUID4
 
-from src.models import UserModel
 from src.schemas.user import CreateUserSchema, IdUserSchema, UpdateUserSchema
 from src.schemas.wrapper import BaseWrapper, CreatedUserWrapper
 from src.services.user import UserService
 from src.utils.unit_of_work import UnitOfWork
+
+if TYPE_CHECKING:
+    from src.models import UserModel
 
 router = APIRouter(prefix='/user')
 
