@@ -8,12 +8,12 @@ from src.api import router
 from src.metadata import DESCRIPTION, TAG_METADATA, TITLE, VERSION
 
 
-def create_fast_api_app():
+def create_fast_api_app() -> FastAPI:
     load_dotenv(find_dotenv('.env'))
     env_name = os.getenv('MODE', 'DEV')
 
     if env_name != 'PROD':
-        _app = FastAPI(
+        fastapi_app = FastAPI(
             default_response_class=ORJSONResponse,
             title=TITLE,
             description=DESCRIPTION,
@@ -21,7 +21,7 @@ def create_fast_api_app():
             openapi_tags=TAG_METADATA,
         )
     else:
-        _app = FastAPI(
+        fastapi_app = FastAPI(
             default_response_class=ORJSONResponse,
             title=TITLE,
             description=DESCRIPTION,
@@ -31,8 +31,8 @@ def create_fast_api_app():
             redoc_url=None,
         )
 
-    _app.include_router(router, prefix='/api')
-    return _app
+    fastapi_app.include_router(router, prefix='/api')
+    return fastapi_app
 
 
 app = create_fast_api_app()

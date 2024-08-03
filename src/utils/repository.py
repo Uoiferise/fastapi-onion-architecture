@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Never
 from uuid import UUID
 
 from sqlalchemy import delete, insert, select, update
@@ -12,33 +12,33 @@ if TYPE_CHECKING:
 
 class AbstractRepository(ABC):
     @abstractmethod
-    async def add_one(self, *args: Any, **kwargs: Any):
+    async def add_one(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
     @abstractmethod
-    async def add_one_and_get_id(self, *args: Any, **kwargs: Any):
+    async def add_one_and_get_id(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
-    async def add_one_and_get_obj(self, *args: Any, **kwargs: Any):
+    async def add_one_and_get_obj(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
-    async def get_by_query_one_or_none(self, *args: Any, **kwargs: Any):
-        raise NotImplementedError
-
-    @abstractmethod
-    async def get_by_query_all(self, *args: Any, **kwargs: Any):
+    async def get_by_query_one_or_none(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
     @abstractmethod
-    async def update_one_by_id(self, *args: Any, **kwargs: Any):
+    async def get_by_query_all(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
     @abstractmethod
-    async def delete_by_query(self, *args: Any, **kwargs: Any):
+    async def update_one_by_id(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
     @abstractmethod
-    async def delete_all(self, *args: Any, **kwargs: Any):
+    async def delete_by_query(self, *args: Any, **kwargs: Any) -> Never:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_all(self, *args: Any, **kwargs: Any) -> Never:
         raise NotImplementedError
 
 

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from types import TracebackType
+from typing import Never
 
 from src.database.db import async_session_maker
 from src.repositories.user import UserRepository
@@ -26,11 +27,11 @@ class AbstractUnitOfWork(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def commit(self):
+    async def commit(self) -> Never:
         raise NotImplementedError
 
     @abstractmethod
-    async def rollback(self):
+    async def rollback(self) -> Never:
         raise NotImplementedError
 
 
@@ -56,8 +57,8 @@ class UnitOfWork(AbstractUnitOfWork):
             await self.rollback()
         await self.session.close()
 
-    async def commit(self):
+    async def commit(self) -> None:
         await self.session.commit()
 
-    async def rollback(self):
+    async def rollback(self) -> None:
         await self.session.rollback()
