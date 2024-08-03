@@ -18,7 +18,7 @@ class BaseService:
     async def add_one(
             cls,
             uow: UnitOfWork,
-            **kwargs,
+            **kwargs: Any,
     ) -> None:
         async with uow:
             await uow.__dict__[cls.base_repository].add_one(**kwargs)
@@ -27,7 +27,7 @@ class BaseService:
     async def add_one_and_get_id(
             cls,
             uow: UnitOfWork,
-            **kwargs,
+            **kwargs: Any,
     ) -> int | str:
         async with uow:
             return await uow.__dict__[cls.base_repository].add_one_and_get_id(**kwargs)
@@ -36,7 +36,7 @@ class BaseService:
     async def add_one_and_get_obj(
             cls,
             uow: UnitOfWork,
-            **kwargs,
+            **kwargs: Any,
     ) -> Any:
         async with uow:
             return await uow.__dict__[cls.base_repository].add_one_and_get_obj(**kwargs)
@@ -45,7 +45,7 @@ class BaseService:
     async def get_by_query_one_or_none(
             cls,
             uow: UnitOfWork,
-            **kwargs,
+            **kwargs: Any,
     ) -> Any | None:
         async with uow:
             return await uow.__dict__[cls.base_repository].get_by_query_one_or_none(**kwargs)
@@ -54,7 +54,7 @@ class BaseService:
     async def get_by_query_all(
             cls,
             uow: UnitOfWork,
-            **kwargs,
+            **kwargs: Any,
     ) -> Sequence[Any]:
         async with uow:
             return await uow.__dict__[cls.base_repository].get_by_query_all(**kwargs)
@@ -73,7 +73,7 @@ class BaseService:
     async def delete_by_query(
             cls,
             uow: UnitOfWork,
-            **kwargs,
+            **kwargs: Any,
     ) -> None:
         async with uow:
             await uow.__dict__[cls.base_repository].delete_by_query(**kwargs)

@@ -37,8 +37,8 @@ extend-select = ["W", "E"]
 preview = true
 ignore = [
     "ANN001", # Missing type annotation for function argument
-    "ANN002", # Missing type annotation for `*args`
-    "ANN003", # Missing type annotation for `**kwargs`
+#    "ANN002", # Missing type annotation for `*args`
+#    "ANN003", # Missing type annotation for `**kwargs`
     "ANN201", # Missing return type annotation for public function
     "ANN202", # Missing return type annotation for private function
     "ANN204", # Missing return type annotation for special method

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from types import TracebackType
 
 from src.database.db import async_session_maker
 from src.repositories.user import UserRepository
@@ -16,7 +17,12 @@ class AbstractUnitOfWork(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def __aexit__(self, *args):
+    async def __aexit__(
+            self,
+            exc_type: type[BaseException] | None,
+            exc_val: BaseException | None,
+            exc_tb: TracebackType | None,
+    ):
         raise NotImplementedError
 
     @abstractmethod
@@ -38,7 +44,12 @@ class UnitOfWork(AbstractUnitOfWork):
         self.session = self.session_factory()
         self.user = UserRepository(self.session)
 
-    async def __aexit__(self, exc_type, *args):
+    async def __aexit__(
+            self,
+            exc_type: type[BaseException] | None,
+            exc_val: BaseException | None,
+            exc_tb: TracebackType | None,
+    ):
         if not exc_type:
             await self.commit()
         else:
