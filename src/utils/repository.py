@@ -51,7 +51,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     model = None
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
     async def add_one(self, **kwargs: Any) -> None:

@@ -10,11 +10,11 @@ class AbstractUnitOfWork(ABC):
     user: UserRepository
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    async def __aenter__(self):
+    async def __aenter__(self) -> None:
         raise NotImplementedError
 
     @abstractmethod
@@ -23,7 +23,7 @@ class AbstractUnitOfWork(ABC):
             exc_type: type[BaseException] | None,
             exc_val: BaseException | None,
             exc_tb: TracebackType | None,
-    ):
+    ) -> None:
         raise NotImplementedError
 
     @abstractmethod
@@ -38,10 +38,10 @@ class AbstractUnitOfWork(ABC):
 class UnitOfWork(AbstractUnitOfWork):
     """The class responsible for the atomicity of transactions."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.session_factory = async_session_maker
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> None:
         self.session = self.session_factory()
         self.user = UserRepository(self.session)
 
@@ -50,7 +50,7 @@ class UnitOfWork(AbstractUnitOfWork):
             exc_type: type[BaseException] | None,
             exc_val: BaseException | None,
             exc_tb: TracebackType | None,
-    ):
+    ) -> None:
         if not exc_type:
             await self.commit()
         else:

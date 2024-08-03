@@ -7,7 +7,7 @@ class BaseModel(DeclarativeBase):
     repr_cols_num = 3
     repr_cols = ()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cols = []
         for idx, col in enumerate(self.__table__.columns.keys()):
             if col in self.repr_cols or idx < self.repr_cols_num:
