@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from typing import Any
-from uuid import uuid4
+from uuid import UUID
 
 from src.utils.unit_of_work import UnitOfWork
 
@@ -63,7 +63,7 @@ class BaseService:
     async def update_one_by_id(
             cls,
             uow: UnitOfWork,
-            _id: int | str | uuid4,
+            _id: int | str | UUID,
             values: dict,
     ) -> Any:
         async with uow:

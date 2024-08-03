@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
-from uuid import uuid4
+from uuid import UUID
 
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -58,7 +58,7 @@ class SqlAlchemyRepository(AbstractRepository):
         query = insert(self.model).values(**kwargs)
         await self.session.execute(query)
 
-    async def add_one_and_get_id(self, **kwargs) -> int | str | uuid4:
+    async def add_one_and_get_id(self, **kwargs) -> int | str | UUID:
         query = insert(self.model).values(**kwargs).returning(self.model.id)
         _id: Result = await self.session.execute(query)
         return _id.scalar_one()
@@ -78,7 +78,7 @@ class SqlAlchemyRepository(AbstractRepository):
         res: Result = await self.session.execute(query)
         return res.scalars().all()
 
-    async def update_one_by_id(self, _id: int | str | uuid4, values: dict) -> type(model) | None:
+    async def update_one_by_id(self, _id: int | str | UUID, values: dict) -> type(model) | None:
         query = update(self.model).filter(self.model.id == _id).values(**values).returning(self.model)
         _obj: Result | None = await self.session.execute(query)
         return _obj.scalar_one_or_none()
