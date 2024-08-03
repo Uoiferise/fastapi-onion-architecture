@@ -36,7 +36,6 @@ select = ["ALL"]
 extend-select = ["W", "E"]
 preview = true
 ignore = [
-    "ANN202", # Missing return type annotation for private function
     "ANN204", # Missing return type annotation for special method
     "ANN401", # Dynamically typed expressions are disallowed
     "B008", # Do not perform function call `Depends` in argument defaults

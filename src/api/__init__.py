@@ -19,8 +19,8 @@ router.include_router(v1_user_router, prefix='/v1', tags=['v1'])
 
 
 @router.get('/healthz/', tags=['healthz'])
-async def health_check(session: AsyncSession = Depends(get_async_session)):
-    async def check_service(service: str):
+async def health_check(session: AsyncSession = Depends(get_async_session)) -> JSONResponse:
+    async def check_service(service: str) -> None:
         try:
             if service == 'postgres':
                 await session.execute(text('SELECT 1'))
