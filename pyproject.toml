@@ -52,8 +52,6 @@ ignore = [
     "D213", # Multi line summary second line
     "FAST002", # FastAPI dependency without `Annotated`
     "INP001", # File is part of an implicit namespace package
-    "N802", # Function name should be lowercase
-    "N816", # Variable in global scope should not be mixedCase
 ]
 
 [tool.ruff.lint.flake8-quotes]

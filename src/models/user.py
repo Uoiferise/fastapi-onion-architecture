@@ -1,19 +1,19 @@
 from sqlalchemy.orm import Mapped
 
 from src.models import BaseModel
-from src.models.mixins.custom_types import created_at_T, str_50_or_none_T, str_50_T, updated_at_T, uuid_pk_T
 from src.schemas.user import UserSchema
+from src.utils.custom_types import created_at, string_50, string_50_nullable, updated_at, uuid_pk
 
 
 class UserModel(BaseModel):
     __tablename__ = 'user'
 
-    id: Mapped[uuid_pk_T]
-    first_name: Mapped[str_50_T]
-    last_name: Mapped[str_50_T]
-    middle_name: Mapped[str_50_or_none_T]
-    created_at: Mapped[created_at_T]
-    updated_at: Mapped[updated_at_T]
+    id: Mapped[uuid_pk]
+    first_name: Mapped[string_50]
+    last_name: Mapped[string_50]
+    middle_name: Mapped[string_50_nullable]
+    created_at: Mapped[created_at]
+    updated_at: Mapped[updated_at]
 
     def to_pydantic_schema(self) -> UserSchema:
         return UserSchema(
