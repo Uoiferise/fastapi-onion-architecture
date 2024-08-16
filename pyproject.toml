@@ -36,22 +36,23 @@ select = ["ALL"]
 extend-select = ["W", "E"]
 preview = true
 ignore = [
-    "ANN401", # Dynamically typed expressions are disallowed
-    "B008", # Do not perform function call `Depends` in argument defaults
-    "B904", # Within an `except` clause, raise exceptions with `raise`
-    "BLE001", # Do not catch blind exception: `Exception`
-    "CPY001", # Missing copyright notice at top of file
-    "D100", # Missing docstring in public module
-    "D101", # Missing docstring in public class
-    "D102", # Missing docstring in public method
-    "D103", # Missing docstring in public function
-    "D104", # Missing docstring in public package
-    "D105", # Missing docstring in magic method
-    "D107", # Missing docstring in `__init__`
-    "D203", # One blank line before class
-    "D213", # Multi line summary second line
-    "FAST002", # FastAPI dependency without `Annotated`
-    "INP001", # File is part of an implicit namespace package
+    "ANN401", # any-type
+    "B008", # function-call-in-default-argument
+    "B904", # raise-without-from-inside-except
+    "BLE001", # blind-except
+    "CPY001", # missing-copyright-notice
+    "D100", # undocumented-public-module
+    "D101", # undocumented-public-class
+    "D102", # undocumented-public-method
+    "D103", # undocumented-public-function
+    "D104", # undocumented-public-package
+    "D105", # undocumented-magic-method
+    "D107", # undocumented-public-init
+    "D203", # one-blank-line-before-class
+    "D213", # multi-line-summary-second-line
+    "DOC501", # docstring-missing-exception
+    "FAST002", # fast-api-non-annotated-dependency
+    "INP001", # implicit-namespace-package
 ]
 
 [tool.ruff.lint.flake8-quotes]
