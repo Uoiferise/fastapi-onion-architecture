@@ -53,6 +53,7 @@ ignore = [
     "DOC501", # docstring-missing-exception
     "FAST002", # fast-api-non-annotated-dependency
     "INP001", # implicit-namespace-package
+    "RUF009", # function-call-in-dataclass-default-argument
 ]
 
 [tool.ruff.lint.flake8-quotes]
