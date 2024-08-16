@@ -5,12 +5,12 @@ import pytest
 from sqlalchemy import text, Result, select, insert
 
 from src.models import UserModel
-from src.schemas.user import UserSchema
+from src.schemas.user import UserDB
 from tests.fakes import FAKE_USERS
 
 
 @pytest.fixture(scope="function")
-def users() -> list[UserSchema]:
+def users() -> list[UserDB]:
     return deepcopy(FAKE_USERS)
 
 

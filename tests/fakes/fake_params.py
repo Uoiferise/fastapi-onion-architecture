@@ -5,7 +5,7 @@ from copy import deepcopy
 import pytest
 from sqlalchemy.exc import MultipleResultsFound
 
-from src.schemas.user import UserSchema
+from src.schemas.user import UserDB
 from tests.fakes import FAKE_USERS
 
 # kwargs, expected_result, expectation
@@ -26,7 +26,7 @@ TEST_BASE_SERVICE_GET_BY_QUERY_ALL_PARAMS = [
 TEST_BASE_SERVICE_UPDATE_ONE_BY_ID_PARAMS = [
     (
         {"_id": FAKE_USERS[0].id, "first_name": "Liza"},
-        UserSchema(
+        UserDB(
             id=FAKE_USERS[0].id,
             first_name="Liza",
             last_name=FAKE_USERS[0].last_name,

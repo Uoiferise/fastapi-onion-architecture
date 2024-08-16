@@ -1,21 +1,21 @@
 from uuid import uuid4
 
-from src.schemas.user import UserSchema
+from src.schemas.user import UserDB
 
-FAKE_USERS: list[UserSchema] = [
-    UserSchema(
+FAKE_USERS: list[UserDB] = [
+    UserDB(
         id=uuid4(),
         first_name='Ivan',
         last_name='Ivanov',
         middle_name='Ivanovich',
     ),
-    UserSchema(
+    UserDB(
         id=uuid4(),
         first_name='Elon',
         last_name='Musk',
         middle_name=None,
     ),
-    UserSchema(
+    UserDB(
         id=uuid4(),
         first_name='Ivan',
         last_name='Terrible',
