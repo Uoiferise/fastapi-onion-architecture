@@ -1,9 +1,13 @@
+"""The module contains base classes for supporting transactions."""
+
+import functools
 from abc import ABC, abstractmethod
 from types import TracebackType
-from typing import Never
+from typing import Any, Never
 
 from src.database.db import async_session_maker
 from src.repositories.user import UserRepository
+from src.utils.custom_types import async_func
 
 
 class AbstractUnitOfWork(ABC):
@@ -62,3 +66,13 @@ class UnitOfWork(AbstractUnitOfWork):
 
     async def rollback(self) -> None:
         await self.session.rollback()
+
+
+def transaction_mode(func: async_func) -> async_func:
+    """Decorate a function with transaction mode."""
+    @functools.wraps(func)
+    async def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+        async with self.uow:
+            return await func(self, *args, **kwargs)
+
+    return wrapper
