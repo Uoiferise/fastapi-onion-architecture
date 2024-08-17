@@ -24,7 +24,7 @@ class CompanyMixin:
         )
 
     @declared_attr
-    def oil_product(self) -> Mapped['CompanyModel']:
+    def company(self) -> Mapped['CompanyModel']:
         return relationship(
             'CompanyModel',
             back_populates=self._company_back_populates,
