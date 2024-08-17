@@ -1,9 +1,9 @@
 """The module contains base routes for working with user."""
 
 from typing import TYPE_CHECKING
-from uuid import UUID
 
 from fastapi import APIRouter, Depends
+from pydantic import UUID4
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 from src.schemas.user import (
@@ -40,7 +40,7 @@ async def create_user(
     status_code=HTTP_200_OK,
 )
 async def get_user(
-        user_id: UUID,
+        user_id: UUID4,
         service: UserService = Depends(UserService),
 ) -> UserResponse:
     """Get user by ID."""
@@ -53,7 +53,7 @@ async def get_user(
     status_code=HTTP_200_OK,
 )
 async def update_user(
-        user_id: UUID,
+        user_id: UUID4,
         user: UpdateUserRequest,
         service: UserService = Depends(UserService),
 ) -> UserResponse:
@@ -67,7 +67,7 @@ async def update_user(
     status_code=HTTP_204_NO_CONTENT,
 )
 async def delete_user(
-        user_id: UUID,
+        user_id: UUID4,
         service: UserService = Depends(UserService),
 ) -> None:
     """Delete user."""

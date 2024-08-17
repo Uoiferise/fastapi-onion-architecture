@@ -9,7 +9,7 @@ from src.utils.repository import SqlAlchemyRepository
 class CompanyRepository(SqlAlchemyRepository):
     model = CompanyModel
 
-    async def get_company_with_users(self, company_id: UUID4) -> CompanyModel:
+    async def get_company_with_users(self, company_id: UUID4) -> CompanyModel | None:
         """Find company by ID with all users."""
         query = (
             select(self.model)

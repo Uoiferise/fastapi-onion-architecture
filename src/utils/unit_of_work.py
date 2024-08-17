@@ -6,8 +6,7 @@ from types import TracebackType
 from typing import Any, Never
 
 from src.database.db import async_session_maker
-from src.repositories import CompanyRepository
-from src.repositories.user import UserRepository
+from src.repositories import CompanyRepository, UserRepository
 from src.utils.custom_types import async_func
 
 

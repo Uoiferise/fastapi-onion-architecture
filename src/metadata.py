@@ -1,11 +1,15 @@
 TAG_METADATA = [
     {
-        'name': 'v1',
-        'description': 'Operations with users v1',
+        'name': 'User | v1',
+        'description': 'Operation with user v1.',
+    },
+    {
+        'name': 'Company | v1',
+        'description': 'Operation with company v1.',
     },
     {
         'name': 'healthz',
-        'description': 'Standard service health check',
+        'description': 'Standard health check.',
     },
 ]
 

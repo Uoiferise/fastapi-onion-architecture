@@ -1,6 +1,7 @@
 from pydantic import UUID4, BaseModel, Field
 
 from src.schemas.response import BaseCreateResponse, BaseResponse
+from src.schemas.user import UserDB
 
 
 class CompanyID(BaseModel):
@@ -20,12 +21,16 @@ class CompanyDB(CompanyID, CreateCompanyRequest):
     is_active: bool
 
 
+class CompanyWithUsers(CompanyDB):
+    users: list[UserDB] = Field(default_factory=list)
+
+
 class CreateCompanyResponse(BaseCreateResponse):
     payload: CompanyDB
 
 
 class CompanyResponse(BaseResponse):
-    payload: CompanyDB
+    payload: CompanyWithUsers
 
 
 class CompanyListResponse(BaseResponse):

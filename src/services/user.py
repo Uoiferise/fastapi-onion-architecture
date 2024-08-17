@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
-from uuid import UUID
 
 from fastapi import HTTPException
+from pydantic import UUID4
 from starlette.status import HTTP_404_NOT_FOUND
 
 from src.models import UserModel
@@ -22,21 +22,21 @@ class UserService(BaseService):
         return await self.uow.user.add_one_and_get_obj(**user.model_dump())
 
     @transaction_mode
-    async def get_user_by_id(self, user_id: UUID) -> UserModel:
+    async def get_user_by_id(self, user_id: UUID4) -> UserModel:
         """Get user by ID."""
         user: UserModel | None = await self.uow.user.get_by_query_one_or_none(id=user_id)
         self._check_user_exists(user)
         return user
 
     @transaction_mode
-    async def update_user(self, user_id: UUID, user: UpdateUserRequest) -> UserModel:
+    async def update_user(self, user_id: UUID4, user: UpdateUserRequest) -> UserModel:
         """Update user by ID."""
         user: UserModel | None = await self.uow.user.update_one_by_id(obj_id=user_id, **user.model_dump())
         self._check_user_exists(user)
         return user
 
     @transaction_mode
-    async def delete_user(self, user_id: UUID) -> None:
+    async def delete_user(self, user_id: UUID4) -> None:
         await self.uow.user.delete_by_query(id=user_id)
 
     @transaction_mode
