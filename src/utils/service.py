@@ -1,92 +1,52 @@
-from typing import Optional, Union, Any, Sequence
-from uuid import uuid4
+"""The module contains base service."""
 
-from src.utils.unit_of_work import UnitOfWork
+from collections.abc import Sequence
+from typing import Any
+from uuid import UUID
+
+from src.utils.unit_of_work import UnitOfWork, transaction_mode
 
 
 class BaseService:
-    """
-    A basic service for performing standard CRUD operations with the base repository.
+    """A basic service for performing standard CRUD operations with the base repository.
 
     params:
         - base_repository: should be string like AbstractUnitOfWork class params
     """
 
-    base_repository: str = None
+    base_repository: str
 
-    @classmethod
-    async def add_one(
-            cls,
-            uow: UnitOfWork,
-            **kwargs
-    ) -> None:
-        async with uow:
-            await uow.__dict__[cls.base_repository].add_one(**kwargs)
+    def __init__(self) -> None:
+        self.uow: UnitOfWork = UnitOfWork()
 
-    @classmethod
-    async def add_one_and_get_id(
-            cls,
-            uow: UnitOfWork,
-            **kwargs
-    ) -> Union[int, str]:
-        async with uow:
-            _id = await uow.__dict__[cls.base_repository].add_one_and_get_id(**kwargs)
-            return _id
+    @transaction_mode
+    async def add_one(self, **kwargs: Any) -> None:
+        await self.uow.__dict__[self.base_repository].add_one(**kwargs)
 
-    @classmethod
-    async def add_one_and_get_obj(
-            cls,
-            uow: UnitOfWork,
-            **kwargs
-    ) -> Any:
-        async with uow:
-            _obj = await uow.__dict__[cls.base_repository].add_one_and_get_obj(**kwargs)
-            return _obj
+    @transaction_mode
+    async def add_one_and_get_id(self, **kwargs: Any) -> int | str:
+        return await self.uow.__dict__[self.base_repository].add_one_and_get_id(**kwargs)
 
-    @classmethod
-    async def get_by_query_one_or_none(
-            cls,
-            uow: UnitOfWork,
-            **kwargs
-    ) -> Optional[Any]:
-        async with uow:
-            _result = await uow.__dict__[cls.base_repository].get_by_query_one_or_none(**kwargs)
-            return _result
+    @transaction_mode
+    async def add_one_and_get_obj(self, **kwargs: Any) -> Any:
+        return await self.uow.__dict__[self.base_repository].add_one_and_get_obj(**kwargs)
 
-    @classmethod
-    async def get_by_query_all(
-            cls,
-            uow: UnitOfWork,
-            **kwargs
-    ) -> Sequence[Any]:
-        async with uow:
-            _result = await uow.__dict__[cls.base_repository].get_by_query_all(**kwargs)
-            return _result
+    @transaction_mode
+    async def get_by_query_one_or_none(self, **kwargs: Any) -> Any | None:
+        return await self.uow.__dict__[self.base_repository].get_by_query_one_or_none(**kwargs)
 
-    @classmethod
-    async def update_one_by_id(
-            cls,
-            uow: UnitOfWork,
-            _id: Union[int, str, uuid4],
-            values: dict
-    ) -> Any:
-        async with uow:
-            _obj = await uow.__dict__[cls.base_repository].update_one_by_id(_id=_id, values=values)
-            return _obj
+    @transaction_mode
+    async def get_by_query_all(self, **kwargs: Any) -> Sequence[Any]:
+        return await self.uow.__dict__[self.base_repository].get_by_query_all(**kwargs)
 
-    @classmethod
-    async def delete_by_query(
-            cls,
-            uow: UnitOfWork,
-            **kwargs
-    ) -> None:
-        async with uow:
-            await uow.__dict__[cls.base_repository].delete_by_query(**kwargs)
+    @transaction_mode
+    async def update_one_by_id(self, obj_id: int | str | UUID, **kwargs: Any) -> Any:
+        return await self.uow.__dict__[self.base_repository].update_one_by_id(obj_id, **kwargs)
 
-    @classmethod
-    async def delete_all(
-            cls,
-            uow: UnitOfWork,
-    ) -> None:
-        async with uow:
-            await uow.__dict__[cls.base_repository].delete_all()
+    @transaction_mode
+    async def delete_by_query(self, **kwargs: Any) -> None:
+        await self.uow.__dict__[self.base_repository].delete_by_query(**kwargs)
+
+    @transaction_mode
+    async def delete_all(self) -> None:
+        await self.uow.__dict__[self.base_repository].delete_all()

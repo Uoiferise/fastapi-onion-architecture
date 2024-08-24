@@ -1,38 +1,38 @@
 import os
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import find_dotenv, load_dotenv
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from src.api import router
-from src.metadata import TITLE, DESCRIPTION, VERSION, TAG_METADATA
+from src.metadata import DESCRIPTION, TAG_METADATA, TITLE, VERSION
 
 
-def create_fast_api_app():
-    load_dotenv(find_dotenv(".env"))
+def create_fast_api_app() -> FastAPI:
+    load_dotenv(find_dotenv('.env'))
     env_name = os.getenv('MODE', 'DEV')
 
     if env_name != 'PROD':
-        _app = FastAPI(
+        fastapi_app = FastAPI(
             default_response_class=ORJSONResponse,
             title=TITLE,
             description=DESCRIPTION,
             version=VERSION,
-            openapi_tags=TAG_METADATA
+            openapi_tags=TAG_METADATA,
         )
     else:
-        _app = FastAPI(
+        fastapi_app = FastAPI(
             default_response_class=ORJSONResponse,
             title=TITLE,
             description=DESCRIPTION,
             version=VERSION,
             openapi_tags=TAG_METADATA,
             docs_url=None,
-            redoc_url=None
+            redoc_url=None,
         )
 
-    _app.include_router(router, prefix='/api')
-    return _app
+    fastapi_app.include_router(router, prefix='/api')
+    return fastapi_app
 
 
 app = create_fast_api_app()

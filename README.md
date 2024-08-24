@@ -1,6 +1,6 @@
 # FastAPI Onion Architecture example
 
-### Python 3.11
+### Python 3.11.8
 ### First thing to do:
 - Create a virtual environment using the command: `python -m venv venv`
 - Activate virtual environment
@@ -14,6 +14,7 @@
 ### Launching the application
   - Using python: `python -m src`
   - Using uvicorn: `uvicorn --port 8000 --host 127.0.0.1 src.main:app --reload`
+  - `make api`
 
 
 ### Alembic commands:
@@ -27,6 +28,11 @@
   - `pytest --maxfail=1 -vv -p no:warnings`
   - `pytest --maxfail=1 -vv -p no:warnings -k 'TestCaseName'`
   - `pytest --maxfail=1 -vv -p no:warnings --ignore=PathName`
+  - `make test`
+
+### Ruff commands:
+  - `ruff check . --config=pyproject.toml`
+  - `make lint`
 
 ### Setting up environment variables:
 **.env**
@@ -35,11 +41,9 @@ MODE=DEV
 DB_USER=postgres
 DB_PASS=postgres
 DB_HOST=localhost
-DB_PORT=5433
+DB_PORT=5432
 DB_NAME=dev_db
 ```
-- The parameters must match the file `docker-compose.development.yaml`, if you plan to build the database in Docker.
-  - For building container: `dev_ops/docker-compose -f docker-compose.development.yaml up --build`
 
 **.test.env**
 
@@ -48,8 +52,6 @@ MODE=TEST
 DB_USER=postgres
 DB_PASS=postgres
 DB_HOST=localhost
-DB_PORT=5434
+DB_PORT=5432
 DB_NAME=test_db
 ```
-- The parameters must match the file `docker-compose.test.yaml`, if you plan to build the database in Docker.
--   - For building container: `docker-compose -f dev_ops/docker-compose.test.yaml up --build`

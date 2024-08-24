@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "fastapi-onion-architecture"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 license = "MIT"
-authors = ["Uoiferise <ws555w@mail.ru>"]
+authors = ["Uoiferise <uoiferise@mail.ru>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -14,13 +14,57 @@ asyncpg = "^0.29.0"
 alembic = "^1.13.1"
 loguru = "^0.7.2"
 black = "^23.12.1"
-
+ruff = "^0.5.5"
+greenlet = "^3.0.3"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.4"
-pytest-asyncio = "^0.23.3"
 pytest-dotenv = "^0.5.2"
+sqlalchemy-utils = "^0.41.2"
+async-asgi-testclient = "^1.4.11"
+pytest-asyncio = "0.21.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+exclude = ["alembic/*"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["ALL"]
+extend-select = ["W", "E"]
+preview = true
+ignore = [
+    "ARG001", # unused-function-argument
+    "ANN401", # any-type
+    "B008", # function-call-in-default-argument
+    "B904", # raise-without-from-inside-except
+    "BLE001", # blind-except
+    "CPY001", # missing-copyright-notice
+    "D100", # undocumented-public-module
+    "D101", # undocumented-public-class
+    "D102", # undocumented-public-method
+    "D103", # undocumented-public-function
+    "D104", # undocumented-public-package
+    "D105", # undocumented-magic-method
+    "D107", # undocumented-public-init
+    "D203", # one-blank-line-before-class
+    "D205", # blank-line-after-summary
+    "D213", # multi-line-summary-second-line
+    "D401", # non-imperative-mood
+    "DOC501", # docstring-missing-exception
+    "FAST002", # fast-api-non-annotated-dependency
+    "INP001", # implicit-namespace-package
+    "RUF009", # function-call-in-dataclass-default-argument
+    "S101", # assert
+    "S608", # hardcoded-sql-expression
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.lint.pylint]
+max-args = 7

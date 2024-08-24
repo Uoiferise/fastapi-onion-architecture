@@ -1,24 +1,23 @@
-from sqlalchemy.orm import Mapped
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.models import BaseModel
-from src.models.mixins.custom_types import uuid_pk_T, created_at_T, updated_at_T, str_50_T, str_50_or_none_T
-from src.schemas.user import UserSchema
+from src.models.mixins.company_mixin import CompanyMixin
+from src.schemas.user import UserDB
+from src.utils.custom_types import created_at, updated_at, uuid_pk
 
 
-class UserModel(BaseModel):
+class UserModel(CompanyMixin, BaseModel):
     __tablename__ = 'user'
 
-    id: Mapped[uuid_pk_T]
-    first_name: Mapped[str_50_T]
-    last_name: Mapped[str_50_T]
-    middle_name: Mapped[str_50_or_none_T]
-    created_at: Mapped[created_at_T]
-    updated_at: Mapped[updated_at_T]
+    _company_back_populates: str | None = 'users'
 
-    def to_pydantic_schema(self) -> UserSchema:
-        return UserSchema(
-            id=self.id,
-            first_name=self.first_name,
-            last_name=self.last_name,
-            middle_name=self.middle_name
-        )
+    id: Mapped[uuid_pk]
+    first_name: Mapped[str] = mapped_column(String(50))
+    last_name: Mapped[str] = mapped_column(String(50))
+    middle_name: Mapped[str | None] = mapped_column(String(50), default=None)
+    created_at: Mapped[created_at]
+    updated_at: Mapped[updated_at]
+
+    def to_pydantic_schema(self) -> UserDB:
+        return UserDB(**self.__dict__)

@@ -1,59 +1,48 @@
+from collections.abc import Sequence
 from copy import deepcopy
-from typing import Callable, Sequence
 
 import pytest
-from sqlalchemy import text, Result, select, insert
+import pytest_asyncio
+from sqlalchemy import Result, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models import UserModel
-from src.schemas.user import UserSchema
-from tests.fakes import FAKE_USERS
-
-
-@pytest.fixture(scope="function")
-def users() -> list[UserSchema]:
-    return deepcopy(FAKE_USERS)
+from src.models import CompanyModel, UserModel
+from src.utils.custom_types import AsyncFunc
+from tests import fixtures
+from tests.utils import bulk_save_models
 
 
-@pytest.fixture(scope="session")
-def clean_users(async_session_maker) -> Callable:
-    sql = text("TRUNCATE public.user RESTART IDENTITY CASCADE;")
-
-    async def _clean_users():
-        async with async_session_maker() as session:
-            await session.execute(sql)
-            await session.commit()
-
-    return _clean_users
+@pytest_asyncio.fixture
+async def setup_companies(transaction_session: AsyncSession, companies: tuple[dict]) -> None:
+    """..."""
+    await bulk_save_models(transaction_session, CompanyModel, companies)
 
 
-@pytest.fixture(scope="session")
-def get_users(async_session_maker) -> Callable:
+@pytest_asyncio.fixture
+async def setup_users(setup_companies: None, transaction_session: AsyncSession, users: tuple[dict]) -> None:
+    """..."""
+    await bulk_save_models(transaction_session, UserModel, users)
+
+
+@pytest_asyncio.fixture
+def get_users(transaction_session: AsyncSession) -> AsyncFunc:
+    """..."""
     async def _get_users() -> Sequence[UserModel]:
-        async with async_session_maker() as session:
-            res: Result = await session.execute(select(UserModel))
-            return res.scalars().all()
-
+        res: Result = await transaction_session.execute(select(UserModel))
+        return res.scalars().all()
     return _get_users
 
 
-@pytest.fixture(scope="function")
-def add_users(async_session_maker, users) -> Callable:
-    async def _add_users() -> None:
-        async with async_session_maker() as session:
-            for user_schema in users:
-                await session.execute(
-                    insert(UserModel).values(**user_schema.model_dump())
-                )
-            await session.commit()
-
-    return _add_users
+@pytest.fixture
+def companies() -> tuple[dict]:
+    return deepcopy(fixtures.postgres.COMPANIES)
 
 
-@pytest.fixture(scope="session")
-def comparing_two_sequence() -> Callable:
-    def _comparing_two_sequence(first: Sequence, second: Sequence) -> bool:
-        _equality_len = len(first) == len(second)
-        _equality_obj = all([obj in second for obj in first])
-        return all([_equality_len, _equality_obj])
+@pytest.fixture
+def users() -> tuple[dict]:
+    return deepcopy(fixtures.postgres.USERS)
 
-    return _comparing_two_sequence
+
+@pytest.fixture
+def first_user() -> dict:
+    return deepcopy(fixtures.postgres.USERS[0])

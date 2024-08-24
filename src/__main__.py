@@ -8,7 +8,7 @@ if __name__ == '__main__':
         level='DEBUG',
         rotation='10 MB',
         compression='zip',
-        serialize=True
+        serialize=True,
     )
 
     uvicorn.run(app='src.main:app', port=8000, reload=True)

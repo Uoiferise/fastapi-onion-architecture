@@ -1,43 +1,87 @@
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import UUID4
+"""The module contains base routes for working with user."""
 
-from src.models import UserModel
-from src.schemas.user import CreateUserSchema, IdUserSchema, UpdateUserSchema
-from src.schemas.wrapper import CreatedUserWrapper, BaseWrapper
+from typing import TYPE_CHECKING
+
+from fastapi import APIRouter, Depends
+from pydantic import UUID4
+from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
+
+from src.schemas.user import (
+    CreateUserRequest,
+    CreateUserResponse,
+    UpdateUserRequest,
+    UserFilters,
+    UserResponse,
+    UsersListResponse,
+)
 from src.services.user import UserService
-from src.utils.unit_of_work import UnitOfWork
+
+if TYPE_CHECKING:
+    from src.models import UserModel
 
 router = APIRouter(prefix='/user')
 
 
-@router.get('/')
-async def get_user(user_id: UUID4, uow: UnitOfWork = Depends(UnitOfWork)):
-    user: UserModel | None = await UserService.get_by_query_one_or_none(uow=uow, id=user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail='User not found')
-    return CreatedUserWrapper(payload=user.to_pydantic_schema())
+@router.post(
+    path='/',
+    status_code=HTTP_201_CREATED,
+)
+async def create_user(
+        user: CreateUserRequest,
+        service: UserService = Depends(UserService),
+) -> CreateUserResponse:
+    """Create user."""
+    created_user: UserModel = await service.create_user(user)
+    return CreateUserResponse(payload=created_user.to_pydantic_schema())
 
 
-@router.put('/')
-async def update_user(new_info: UpdateUserSchema, uow: UnitOfWork = Depends(UnitOfWork)):
-    new_info: dict = new_info.model_dump()
-    user_id = new_info.pop('id')
-    updated_user: UserModel | None = await UserService.update_one_by_id(uow=uow, _id=user_id, values=new_info)
-    if not updated_user:
-        raise HTTPException(status_code=404, detail='User not found')
-    return CreatedUserWrapper(payload=updated_user.to_pydantic_schema())
+@router.get(
+    path='/{user_id}',
+    status_code=HTTP_200_OK,
+)
+async def get_user(
+        user_id: UUID4,
+        service: UserService = Depends(UserService),
+) -> UserResponse:
+    """Get user by ID."""
+    user: UserModel | None = await service.get_user_by_id(user_id)
+    return UserResponse(payload=user.to_pydantic_schema())
 
 
-@router.post('/')
-async def create_user(user: CreateUserSchema, uow: UnitOfWork = Depends(UnitOfWork)):
-    created_user: UserModel = await UserService.add_one_and_get_obj(uow=uow, **user.model_dump())
-    return CreatedUserWrapper(payload=created_user.to_pydantic_schema())
+@router.put(
+    path='/{user_id}',
+    status_code=HTTP_200_OK,
+)
+async def update_user(
+        user_id: UUID4,
+        user: UpdateUserRequest,
+        service: UserService = Depends(UserService),
+) -> UserResponse:
+    """Update user."""
+    updated_user: UserModel = await service.update_user(user_id, user)
+    return UserResponse(payload=updated_user.to_pydantic_schema())
 
 
-@router.delete('/')
-async def delete_user(user_id: IdUserSchema, uow: UnitOfWork = Depends(UnitOfWork)):
-    if await UserService.get_by_query_one_or_none(uow=uow, **user_id.model_dump()):
-        await UserService.delete_by_query(uow=uow, **user_id.model_dump())
-        return BaseWrapper()
-    else:
-        raise HTTPException(status_code=404, detail='User not found')
+@router.delete(
+    '/{user_id}',
+    status_code=HTTP_204_NO_CONTENT,
+)
+async def delete_user(
+        user_id: UUID4,
+        service: UserService = Depends(UserService),
+) -> None:
+    """Delete user."""
+    await service.delete_user(user_id)
+
+
+@router.get(
+    '/filters/',
+    status_code=HTTP_200_OK,
+)
+async def get_users_by_filters(
+        filters: UserFilters = Depends(UserFilters),
+        service: UserService = Depends(UserService),
+) -> UsersListResponse:
+    """Get users by filters."""
+    users = await service.get_users_by_filters(filters)
+    return UsersListResponse(payload=users)
