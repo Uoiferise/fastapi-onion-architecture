@@ -40,8 +40,8 @@ class BaseService:
         return await self.uow.__dict__[self.base_repository].get_by_query_all(**kwargs)
 
     @transaction_mode
-    async def update_one_by_id(self, obj_id: int | str | UUID, values: dict) -> Any:
-        return await self.uow.__dict__[self.base_repository].update_one_by_id(obj_id=obj_id, values=values)
+    async def update_one_by_id(self, obj_id: int | str | UUID, **kwargs: Any) -> Any:
+        return await self.uow.__dict__[self.base_repository].update_one_by_id(obj_id, **kwargs)
 
     @transaction_mode
     async def delete_by_query(self, **kwargs: Any) -> None:

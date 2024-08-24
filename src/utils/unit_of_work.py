@@ -7,7 +7,7 @@ from typing import Any, Never
 
 from src.database.db import async_session_maker
 from src.repositories import CompanyRepository, UserRepository
-from src.utils.custom_types import async_func
+from src.utils.custom_types import AsyncFunc
 
 
 class AbstractUnitOfWork(ABC):
@@ -23,10 +23,10 @@ class AbstractUnitOfWork(ABC):
 
     @abstractmethod
     async def __aexit__(
-            self,
-            exc_type: type[BaseException] | None,
-            exc_val: BaseException | None,
-            exc_tb: TracebackType | None,
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
     ) -> None:
         raise NotImplementedError
 
@@ -51,10 +51,10 @@ class UnitOfWork(AbstractUnitOfWork):
         self.user = UserRepository(self.session)
 
     async def __aexit__(
-            self,
-            exc_type: type[BaseException] | None,
-            exc_val: BaseException | None,
-            exc_tb: TracebackType | None,
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
     ) -> None:
         if not exc_type:
             await self.commit()
@@ -69,7 +69,7 @@ class UnitOfWork(AbstractUnitOfWork):
         await self.session.rollback()
 
 
-def transaction_mode(func: async_func) -> async_func:
+def transaction_mode(func: AsyncFunc) -> AsyncFunc:
     """Decorate a function with transaction mode."""
     @functools.wraps(func)
     async def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:

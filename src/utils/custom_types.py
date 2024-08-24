@@ -6,7 +6,7 @@ from uuid import uuid4
 from sqlalchemy import UUID, DateTime, Integer, text
 from sqlalchemy.orm import mapped_column
 
-async_func = Callable[..., Awaitable[Any]]
+AsyncFunc = Callable[..., Awaitable[Any]]
 
 integer_pk = Annotated[int, mapped_column(Integer, primary_key=True)]
 uuid_pk = Annotated[uuid4, mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)]

@@ -44,7 +44,7 @@ async def get_user(
         service: UserService = Depends(UserService),
 ) -> UserResponse:
     """Get user by ID."""
-    user: UserModel | None = await service.get_user_by_id(id=user_id)
+    user: UserModel | None = await service.get_user_by_id(user_id)
     return UserResponse(payload=user.to_pydantic_schema())
 
 

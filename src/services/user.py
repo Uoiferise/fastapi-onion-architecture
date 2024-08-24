@@ -37,14 +37,17 @@ class UserService(BaseService):
 
     @transaction_mode
     async def delete_user(self, user_id: UUID4) -> None:
+        """..."""
         await self.uow.user.delete_by_query(id=user_id)
 
     @transaction_mode
     async def get_users_by_filters(self, filters: UserFilters) -> list[UserDB]:
+        """..."""
         users: Sequence[UserModel] = await self.uow.user.get_users_by_filter(filters)
         return [user.to_pydantic_schema() for user in users]
 
     @staticmethod
     def _check_user_exists(user: UserModel | None) -> None:
+        """..."""
         if not user:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail='User not found')
