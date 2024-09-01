@@ -14,11 +14,11 @@ class AbstractUnitOfWork(ABC):
     user: UserRepository
 
     @abstractmethod
-    def __init__(self) -> None:
+    def __init__(self) -> Never:
         raise NotImplementedError
 
     @abstractmethod
-    async def __aenter__(self) -> None:
+    async def __aenter__(self) -> Never:
         raise NotImplementedError
 
     @abstractmethod
@@ -27,7 +27,7 @@ class AbstractUnitOfWork(ABC):
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
-    ) -> None:
+    ) -> Never:
         raise NotImplementedError
 
     @abstractmethod
