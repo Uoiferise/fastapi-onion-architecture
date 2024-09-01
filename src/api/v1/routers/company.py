@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends
 from pydantic import UUID4
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
+from src.api.v1.services import CompanyService
 from src.schemas.company import CompanyResponse, CompanyWithUsers, CreateCompanyRequest, CreateCompanyResponse
-from src.services import CompanyService
 
 if TYPE_CHECKING:
     from src.models import CompanyModel

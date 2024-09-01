@@ -10,10 +10,10 @@ from httpx import AsyncClient
 from sqlalchemy import Result, sql
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
+from src.api.v1.services import CompanyService, UserService
 from src.config import settings
 from src.main import app
 from src.models import BaseModel
-from src.services import CompanyService, UserService
 from tests.fixtures import FakeCompanyService, FakeUserService
 
 

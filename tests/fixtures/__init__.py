@@ -13,8 +13,8 @@ from types import TracebackType
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.api.v1.services import CompanyService, UserService
 from src.repositories import CompanyRepository, UserRepository
-from src.services import CompanyService, UserService
 from src.utils.service import BaseService
 from src.utils.unit_of_work import UnitOfWork
 from tests.fixtures import postgres, test_cases

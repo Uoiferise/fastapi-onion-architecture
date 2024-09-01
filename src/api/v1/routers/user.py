@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends
 from pydantic import UUID4
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
+from src.api.v1.services.user import UserService
 from src.schemas.user import (
     CreateUserRequest,
     CreateUserResponse,
@@ -14,7 +15,6 @@ from src.schemas.user import (
     UserResponse,
     UsersListResponse,
 )
-from src.services.user import UserService
 
 if TYPE_CHECKING:
     from src.models import UserModel
