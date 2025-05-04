@@ -45,7 +45,7 @@ def transaction_mode(_func: T | None = None, *, auto_flush: bool = False) -> T |
 
 
 class AbstractService(ABC):
-    """Абстрактный класс, реализующий CRUD операции на уровне сервиса."""
+    """An abstract class that implements CRUD operations at the service level."""
 
     uow: AbstractUnitOfWork
 
