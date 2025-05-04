@@ -1,10 +1,10 @@
 """The package contains various data used in tests."""
 
 __all__ = [
+    'CompanyService',
     'FakeBaseService',
-    'FakeCompanyService',
     'FakeUnitOfWork',
-    'FakeUserService',
+    'UserService',
     'postgres',
     'test_cases',
 ]
@@ -48,15 +48,3 @@ class FakeBaseService(BaseService):
     def __init__(self, session: AsyncSession) -> None:
         super().__init__()
         self.uow = FakeUnitOfWork(session)
-
-
-class FakeUserService(FakeBaseService, UserService):
-    """..."""
-
-    _repo: str = 'user'
-
-
-class FakeCompanyService(FakeBaseService, CompanyService):
-    """..."""
-
-    _repo: str = 'company'

@@ -1,7 +1,7 @@
 """Contains helper fixtures for setup tests infrastructure."""
 
 import asyncio
-from collections.abc import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator
 
 import pytest
 import pytest_asyncio
@@ -10,11 +10,11 @@ from httpx import AsyncClient
 from sqlalchemy import Result, sql
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
-from src.api.v1.services import CompanyService, UserService
 from src.config import settings
 from src.main import app
 from src.models import BaseModel
-from tests.fixtures import FakeCompanyService, FakeUserService
+from src.utils.unit_of_work import UnitOfWork
+from tests.fixtures import FakeUnitOfWork
 
 
 @pytest.fixture(scope='session')
@@ -116,26 +116,15 @@ async def transaction_session(db_engine: AsyncEngine) -> AsyncGenerator[AsyncSes
 
 
 @pytest_asyncio.fixture
-def fake_user_service(transaction_session: AsyncSession) -> Generator[FakeUserService, None]:
-    """..."""
-    _fake_user_service = FakeUserService(transaction_session)
-    yield _fake_user_service
+def fake_uow(transaction_session: AsyncSession) -> FakeUnitOfWork:
+    """Returns the test UnitOfWork for a particular test."""
+    _fake_uow = FakeUnitOfWork(transaction_session)
+    yield _fake_uow
 
 
 @pytest_asyncio.fixture
-def fake_company_service(transaction_session: AsyncSession) -> Generator[FakeCompanyService, None]:
+async def async_client(fake_uow: FakeUnitOfWork) -> AsyncGenerator[AsyncClient, None]:
     """..."""
-    _fake_company_service = FakeCompanyService(transaction_session)
-    yield _fake_company_service
-
-
-@pytest_asyncio.fixture
-async def async_client(
-    fake_user_service: FakeUserService,
-    fake_company_service: FakeCompanyService,
-) -> AsyncGenerator[AsyncClient, None]:
-    """..."""
-    app.dependency_overrides[UserService] = lambda: fake_user_service
-    app.dependency_overrides[CompanyService] = lambda: fake_company_service
+    app.dependency_overrides[UnitOfWork] = lambda: fake_uow
     async with AsyncClient(app=app, base_url='http://test') as ac:
         yield ac

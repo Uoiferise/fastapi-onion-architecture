@@ -69,7 +69,7 @@ class TestBaseService:
         ('values', 'expected_result', 'expectation'),
         fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_GET_BY_QUERY_ONE_OR_NONE,
     )
-    async def test_get_by_query_one_or_none(
+    async def test_get_by_filter_one_or_none(
         self,
         values: dict,
         expected_result: UserDB,
@@ -78,7 +78,7 @@ class TestBaseService:
     ) -> None:
         service = self.__get_service(transaction_session)
         with expectation:
-            user_in_db: UserModel | None = await service.get_by_query_one_or_none(**values)
+            user_in_db: UserModel | None = await service.get_by_filter_one_or_none(**values)
             result = None if not user_in_db else user_in_db.to_schema()
             assert result == expected_result
 
@@ -87,7 +87,7 @@ class TestBaseService:
         ('values', 'expected_result', 'expectation'),
         fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_GET_BY_QUERY_ALL,
     )
-    async def test_get_by_query_all(
+    async def test_get_by_filter_all(
         self,
         values: dict,
         expected_result: list,
@@ -96,7 +96,7 @@ class TestBaseService:
     ) -> None:
         service = self.__get_service(transaction_session)
         with expectation:
-            users_in_db: Sequence[UserModel] = await service.get_by_query_all(**values)
+            users_in_db: Sequence[UserModel] = await service.get_by_filter_all(**values)
             assert compare_dicts_and_db_models(users_in_db, expected_result, UserDB)
 
     @pytest.mark.usefixtures('setup_users')
@@ -121,7 +121,7 @@ class TestBaseService:
         ('values', 'expected_result', 'expectation'),
         fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_DELETE_BY_QUERY,
     )
-    async def test_delete_by_query(
+    async def test_delete_by_filter(
         self,
         values: dict,
         expected_result: list,
@@ -131,7 +131,7 @@ class TestBaseService:
     ) -> None:
         service = self.__get_service(transaction_session)
         with expectation:
-            await service.delete_by_query(**values)
+            await service.delete_by_filter(**values)
             users_in_db: Sequence[UserModel] = await get_users()
             assert compare_dicts_and_db_models(users_in_db, expected_result, UserDB)
 

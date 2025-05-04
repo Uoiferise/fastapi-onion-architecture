@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 class TestSqlAlchemyRepository:
     class _SqlAlchemyRepository(SqlAlchemyRepository):
-        model = UserModel
+        _model = UserModel
 
     def __get_sql_rep(self, session: AsyncSession) -> SqlAlchemyRepository:
         return self._SqlAlchemyRepository(session)
@@ -71,7 +71,7 @@ class TestSqlAlchemyRepository:
         ('values', 'expected_result', 'expectation'),
         fixtures.test_cases.PARAMS_TEST_SQLALCHEMY_REPOSITORY_GET_BY_QUERY_ONE_OR_NONE,
     )
-    async def test_get_by_query_one_or_none(
+    async def test_get_by_filter_one_or_none(
         self,
         values: dict,
         expected_result: UserDB,
@@ -80,7 +80,7 @@ class TestSqlAlchemyRepository:
     ) -> None:
         sql_rep = self.__get_sql_rep(transaction_session)
         with expectation:
-            user_in_db: UserModel | None = await sql_rep.get_by_query_one_or_none(**values)
+            user_in_db: UserModel | None = await sql_rep.get_by_filter_one_or_none(**values)
             result = None if not user_in_db else user_in_db.to_schema()
             assert result == expected_result
 
@@ -89,7 +89,7 @@ class TestSqlAlchemyRepository:
         ('values', 'expected_result', 'expectation'),
         fixtures.test_cases.PARAMS_TEST_SQLALCHEMY_REPOSITORY_GET_BY_QUERY_ALL,
     )
-    async def test_get_by_query_all(
+    async def test_get_by_filter_all(
         self,
         values: dict,
         expected_result: list,
@@ -98,7 +98,7 @@ class TestSqlAlchemyRepository:
     ) -> None:
         sql_rep = self.__get_sql_rep(transaction_session)
         with expectation:
-            users_in_db: Sequence[UserModel] = await sql_rep.get_by_query_all(**values)
+            users_in_db: Sequence[UserModel] = await sql_rep.get_by_filter_all(**values)
             assert compare_dicts_and_db_models(users_in_db, expected_result, UserDB)
 
     @pytest.mark.usefixtures('setup_users')
@@ -123,7 +123,7 @@ class TestSqlAlchemyRepository:
         ('values', 'expected_result', 'expectation'),
         fixtures.test_cases.PARAMS_TEST_SQLALCHEMY_REPOSITORY_DELETE_BY_QUERY,
     )
-    async def test_delete_by_query(
+    async def test_delete_by_filter(
         self,
         values: dict,
         expected_result: list,
@@ -133,7 +133,7 @@ class TestSqlAlchemyRepository:
     ) -> None:
         sql_rep = self.__get_sql_rep(transaction_session)
         with expectation:
-            await sql_rep.delete_by_query(**values)
+            await sql_rep.delete_by_filter(**values)
             await transaction_session.flush()
             users_in_db: Sequence[UserModel] = await get_users()
             assert compare_dicts_and_db_models(users_in_db, expected_result, UserDB)
