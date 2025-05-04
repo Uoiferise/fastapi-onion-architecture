@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class TestBaseService:
     class _BaseService(FakeBaseService):
-        base_repository = 'user'
+        _repo = 'user'
 
     def __get_service(self, session: AsyncSession) -> FakeBaseService:
         return self._BaseService(session)

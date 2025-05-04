@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class UserService(BaseService):
-    base_repository: str = 'user'
+    _repo: str = 'user'
 
     @transaction_mode
     async def create_user(self, user: CreateUserRequest) -> UserModel:

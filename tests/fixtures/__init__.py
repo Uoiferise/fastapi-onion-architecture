@@ -53,10 +53,10 @@ class FakeBaseService(BaseService):
 class FakeUserService(FakeBaseService, UserService):
     """..."""
 
-    base_repository: str = 'user'
+    _repo: str = 'user'
 
 
 class FakeCompanyService(FakeBaseService, CompanyService):
     """..."""
 
-    base_repository: str = 'company'
+    _repo: str = 'company'

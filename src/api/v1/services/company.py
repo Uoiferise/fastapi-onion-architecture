@@ -9,7 +9,7 @@ from src.utils.unit_of_work import transaction_mode
 
 
 class CompanyService(BaseService):
-    base_repository: str = 'company'
+    _repo: str = 'company'
 
     @transaction_mode
     async def create_company(self, company: CreateCompanyRequest) -> CompanyModel:
