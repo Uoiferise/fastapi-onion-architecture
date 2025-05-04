@@ -9,6 +9,7 @@ from src.repositories import CompanyRepository, UserRepository
 
 
 class AbstractUnitOfWork(ABC):
+    is_open: bool
     user: UserRepository
     company: CompanyRepository
 

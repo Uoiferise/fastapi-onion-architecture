@@ -26,5 +26,5 @@ class UserRepository(SqlAlchemyRepository):
         if filters.middle_name:
             query = query.where(self.model.middle_name.in_(filters.middle_name))
 
-        res: Result = await self.session.execute(query)
+        res: Result = await self._session.execute(query)
         return res.scalars().all()

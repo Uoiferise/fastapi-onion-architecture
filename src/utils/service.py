@@ -8,7 +8,7 @@ from uuid import UUID
 from fastapi import Depends, HTTPException
 from starlette.status import HTTP_404_NOT_FOUND
 
-from src.utils.repository import SqlAlchemyRepository
+from src.utils.repository import AbstractRepository
 from src.utils.unit_of_work import AbstractUnitOfWork, UnitOfWork
 
 T = TypeVar('T', bound=Callable[..., Awaitable[Any]])
@@ -163,6 +163,6 @@ class BaseService(AbstractService):
         if not obj:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail=details)
 
-    def _get_related_repo(self) -> SqlAlchemyRepository:
+    def _get_related_repo(self) -> AbstractRepository:
         """Returns the repository associated with the service."""
         return getattr(self.uow, self._repo)
