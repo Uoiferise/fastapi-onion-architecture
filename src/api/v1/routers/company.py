@@ -1,16 +1,17 @@
 """The module contains base routes for working with company."""
 
-from typing import TYPE_CHECKING
-
 from fastapi import APIRouter, Depends
 from pydantic import UUID4
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
 from src.api.v1.services import CompanyService
-from src.schemas.company import CompanyResponse, CompanyWithUsers, CreateCompanyRequest, CreateCompanyResponse
-
-if TYPE_CHECKING:
-    from src.models import CompanyModel
+from src.schemas.company import (
+    CompanyDB,
+    CompanyResponse,
+    CompanyWithUsers,
+    CreateCompanyRequest,
+    CreateCompanyResponse,
+)
 
 router = APIRouter(prefix='/company')
 
@@ -20,12 +21,12 @@ router = APIRouter(prefix='/company')
     status_code=HTTP_201_CREATED,
 )
 async def create_company(
-        company: CreateCompanyRequest,
-        service: CompanyService = Depends(CompanyService),
+    company: CreateCompanyRequest,
+    service: CompanyService = Depends(),
 ) -> CreateCompanyResponse:
     """Create user."""
-    created_user: CompanyModel = await service.create_company(company)
-    return CreateCompanyResponse(payload=created_user.to_schema())
+    created_user: CompanyDB = await service.create_company(company)
+    return CreateCompanyResponse(payload=created_user)
 
 
 @router.get(
@@ -33,8 +34,8 @@ async def create_company(
     status_code=HTTP_200_OK,
 )
 async def get_company_with_users(
-        company_id: UUID4,
-        service: CompanyService = Depends(CompanyService),
+    company_id: UUID4,
+    service: CompanyService = Depends(),
 ) -> CompanyResponse:
     """Get user by ID."""
     company: CompanyWithUsers = await service.get_company_with_users(company_id)

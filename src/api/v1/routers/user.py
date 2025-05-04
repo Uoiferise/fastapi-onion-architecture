@@ -1,7 +1,5 @@
 """The module contains base routes for working with user."""
 
-from typing import TYPE_CHECKING
-
 from fastapi import APIRouter, Depends
 from pydantic import UUID4
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
@@ -11,13 +9,11 @@ from src.schemas.user import (
     CreateUserRequest,
     CreateUserResponse,
     UpdateUserRequest,
+    UserDB,
     UserFilters,
     UserResponse,
     UsersListResponse,
 )
-
-if TYPE_CHECKING:
-    from src.models import UserModel
 
 router = APIRouter(prefix='/user')
 
@@ -27,12 +23,12 @@ router = APIRouter(prefix='/user')
     status_code=HTTP_201_CREATED,
 )
 async def create_user(
-        user: CreateUserRequest,
-        service: UserService = Depends(UserService),
+    user: CreateUserRequest,
+    service: UserService = Depends(UserService),
 ) -> CreateUserResponse:
     """Create user."""
-    created_user: UserModel = await service.create_user(user)
-    return CreateUserResponse(payload=created_user.to_schema())
+    created_user: UserDB = await service.create_user(user)
+    return CreateUserResponse(payload=created_user)
 
 
 @router.get(
@@ -40,12 +36,12 @@ async def create_user(
     status_code=HTTP_200_OK,
 )
 async def get_user(
-        user_id: UUID4,
-        service: UserService = Depends(UserService),
+    user_id: UUID4,
+    service: UserService = Depends(),
 ) -> UserResponse:
     """Get user by ID."""
-    user: UserModel | None = await service.get_user_by_id(user_id)
-    return UserResponse(payload=user.to_schema())
+    user: UserDB | None = await service.get_user_by_id(user_id)
+    return UserResponse(payload=user)
 
 
 @router.put(
@@ -53,13 +49,13 @@ async def get_user(
     status_code=HTTP_200_OK,
 )
 async def update_user(
-        user_id: UUID4,
-        user: UpdateUserRequest,
-        service: UserService = Depends(UserService),
+    user_id: UUID4,
+    user: UpdateUserRequest,
+    service: UserService = Depends(),
 ) -> UserResponse:
     """Update user."""
-    updated_user: UserModel = await service.update_user(user_id, user)
-    return UserResponse(payload=updated_user.to_schema())
+    updated_user: UserDB = await service.update_user(user_id, user)
+    return UserResponse(payload=updated_user)
 
 
 @router.delete(
@@ -67,8 +63,8 @@ async def update_user(
     status_code=HTTP_204_NO_CONTENT,
 )
 async def delete_user(
-        user_id: UUID4,
-        service: UserService = Depends(UserService),
+    user_id: UUID4,
+    service: UserService = Depends(),
 ) -> None:
     """Delete user."""
     await service.delete_user(user_id)
@@ -79,8 +75,8 @@ async def delete_user(
     status_code=HTTP_200_OK,
 )
 async def get_users_by_filters(
-        filters: UserFilters = Depends(UserFilters),
-        service: UserService = Depends(UserService),
+    filters: UserFilters = Depends(),
+    service: UserService = Depends(),
 ) -> UsersListResponse:
     """Get users by filters."""
     users = await service.get_users_by_filters(filters)

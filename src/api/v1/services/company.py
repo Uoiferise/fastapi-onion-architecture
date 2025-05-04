@@ -1,26 +1,29 @@
-from fastapi import HTTPException
-from pydantic import UUID4
-from starlette.status import HTTP_404_NOT_FOUND
+from typing import TYPE_CHECKING
 
-from src.models import CompanyModel
-from src.schemas.company import CompanyWithUsers, CreateCompanyRequest
-from src.utils.service import BaseService
-from src.utils.unit_of_work import transaction_mode
+from pydantic import UUID4
+
+from src.schemas.company import CompanyDB, CompanyWithUsers, CreateCompanyRequest
+from src.utils.constans import COMPANY_NOT_FOUND_MSG
+from src.utils.service import BaseService, transaction_mode
+
+if TYPE_CHECKING:
+    from src.models import CompanyModel
 
 
 class CompanyService(BaseService):
     _repo: str = 'company'
 
     @transaction_mode
-    async def create_company(self, company: CreateCompanyRequest) -> CompanyModel:
+    async def create_company(self, company: CreateCompanyRequest) -> CompanyDB:
         """Create company."""
-        return await self.uow.company.add_one_and_get_obj(**company.model_dump())
+        created_company: CompanyModel = await self.uow.company.add_one_and_get_obj(**company.model_dump())
+        return created_company.to_schema()
 
     @transaction_mode
     async def get_company_with_users(self, company_id: UUID4) -> CompanyWithUsers:
         """Find company by ID with all users."""
         company: CompanyModel | None = await self.uow.company.get_company_with_users(company_id)
-        self._check_company_exists(company)
+        self.check_existence(obj=company, details=COMPANY_NOT_FOUND_MSG)
         return CompanyWithUsers(
             id=company.id,
             inn=company.inn,
@@ -28,8 +31,3 @@ class CompanyService(BaseService):
             is_active=company.is_active,
             users=[user.to_schema() for user in company.users],
         )
-
-    @staticmethod
-    def _check_company_exists(company: CompanyModel | None) -> None:
-        if not company:
-            raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail='User not found')
