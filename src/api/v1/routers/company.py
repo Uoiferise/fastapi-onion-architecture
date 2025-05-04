@@ -25,7 +25,7 @@ async def create_company(
 ) -> CreateCompanyResponse:
     """Create user."""
     created_user: CompanyModel = await service.create_company(company)
-    return CreateCompanyResponse(payload=created_user.to_pydantic_schema())
+    return CreateCompanyResponse(payload=created_user.to_schema())
 
 
 @router.get(

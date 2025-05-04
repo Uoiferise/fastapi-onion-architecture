@@ -81,7 +81,7 @@ class TestSqlAlchemyRepository:
         sql_rep = self.__get_sql_rep(transaction_session)
         with expectation:
             user_in_db: UserModel | None = await sql_rep.get_by_query_one_or_none(**values)
-            result = None if not user_in_db else user_in_db.to_pydantic_schema()
+            result = None if not user_in_db else user_in_db.to_schema()
             assert result == expected_result
 
     @pytest.mark.usefixtures('setup_users')
@@ -116,7 +116,7 @@ class TestSqlAlchemyRepository:
         sql_rep = self.__get_sql_rep(transaction_session)
         with expectation:
             updated_user: UserModel | None = await sql_rep.update_one_by_id(values.pop('_id'), **values)
-            assert updated_user.to_pydantic_schema() == expected_result
+            assert updated_user.to_schema() == expected_result
 
     @pytest.mark.usefixtures('setup_users')
     @pytest.mark.parametrize(

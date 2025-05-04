@@ -32,7 +32,7 @@ async def create_user(
 ) -> CreateUserResponse:
     """Create user."""
     created_user: UserModel = await service.create_user(user)
-    return CreateUserResponse(payload=created_user.to_pydantic_schema())
+    return CreateUserResponse(payload=created_user.to_schema())
 
 
 @router.get(
@@ -45,7 +45,7 @@ async def get_user(
 ) -> UserResponse:
     """Get user by ID."""
     user: UserModel | None = await service.get_user_by_id(user_id)
-    return UserResponse(payload=user.to_pydantic_schema())
+    return UserResponse(payload=user.to_schema())
 
 
 @router.put(
@@ -59,11 +59,11 @@ async def update_user(
 ) -> UserResponse:
     """Update user."""
     updated_user: UserModel = await service.update_user(user_id, user)
-    return UserResponse(payload=updated_user.to_pydantic_schema())
+    return UserResponse(payload=updated_user.to_schema())
 
 
 @router.delete(
-    '/{user_id}',
+    path='/{user_id}',
     status_code=HTTP_204_NO_CONTENT,
 )
 async def delete_user(
@@ -75,7 +75,7 @@ async def delete_user(
 
 
 @router.get(
-    '/filters/',
+    path='/filters/',
     status_code=HTTP_200_OK,
 )
 async def get_users_by_filters(

@@ -26,7 +26,7 @@ class CompanyService(BaseService):
             inn=company.inn,
             company_name=company.company_name,
             is_active=company.is_active,
-            users=[user.to_pydantic_schema() for user in company.users],
+            users=[user.to_schema() for user in company.users],
         )
 
     @staticmethod

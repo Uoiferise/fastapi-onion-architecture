@@ -44,7 +44,7 @@ class UserService(BaseService):
     async def get_users_by_filters(self, filters: UserFilters) -> list[UserDB]:
         """..."""
         users: Sequence[UserModel] = await self.uow.user.get_users_by_filter(filters)
-        return [user.to_pydantic_schema() for user in users]
+        return [user.to_schema() for user in users]
 
     @staticmethod
     def _check_user_exists(user: UserModel | None) -> None:

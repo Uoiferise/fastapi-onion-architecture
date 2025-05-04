@@ -79,7 +79,7 @@ class TestBaseService:
         service = self.__get_service(transaction_session)
         with expectation:
             user_in_db: UserModel | None = await service.get_by_query_one_or_none(**values)
-            result = None if not user_in_db else user_in_db.to_pydantic_schema()
+            result = None if not user_in_db else user_in_db.to_schema()
             assert result == expected_result
 
     @pytest.mark.usefixtures('setup_users')
@@ -114,7 +114,7 @@ class TestBaseService:
         service = self.__get_service(transaction_session)
         with expectation:
             updated_user: UserModel | None = await service.update_one_by_id(values.pop('_id'), **values)
-            assert updated_user.to_pydantic_schema() == expected_result
+            assert updated_user.to_schema() == expected_result
 
     @pytest.mark.usefixtures('setup_users')
     @pytest.mark.parametrize(

@@ -23,5 +23,5 @@ class CompanyModel(BaseModel):
 
     users: Mapped[list['UserModel']] = relationship(back_populates='company')
 
-    def to_pydantic_schema(self) -> CompanyDB:
+    def to_schema(self) -> CompanyDB:
         return CompanyDB(**self.__dict__)

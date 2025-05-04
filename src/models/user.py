@@ -19,5 +19,5 @@ class UserModel(CompanyMixin, BaseModel):
     created_at: Mapped[created_at]
     updated_at: Mapped[updated_at]
 
-    def to_pydantic_schema(self) -> UserDB:
+    def to_schema(self) -> UserDB:
         return UserDB(**self.__dict__)

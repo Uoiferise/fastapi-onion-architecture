@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED
 
