@@ -7,7 +7,7 @@ from src.schemas.user import UserFilters
 from src.utils.repository import SqlAlchemyRepository
 
 
-class UserRepository(SqlAlchemyRepository):
+class UserRepository(SqlAlchemyRepository[UserModel]):
     _model = UserModel
 
     async def get_users_by_filter(self, filters: UserFilters) -> Sequence[UserModel]:

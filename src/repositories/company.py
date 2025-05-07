@@ -6,7 +6,7 @@ from src.models import CompanyModel
 from src.utils.repository import SqlAlchemyRepository
 
 
-class CompanyRepository(SqlAlchemyRepository):
+class CompanyRepository(SqlAlchemyRepository[CompanyModel]):
     _model = CompanyModel
 
     async def get_company_with_users(self, company_id: UUID4) -> CompanyModel | None:
