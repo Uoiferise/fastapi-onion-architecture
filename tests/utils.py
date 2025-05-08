@@ -1,13 +1,45 @@
 """Contains helper functions for tests."""
 
-from collections.abc import Iterable, Sequence
-from typing import Any
+from collections.abc import Callable, Iterable, Sequence
+from contextlib import AbstractContextManager, nullcontext
+from typing import Any, TypeVar
 
 from pydantic import BaseModel
 from requests import Response
 from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
+from starlette.status import HTTP_200_OK
+
+from tests.constants import BASE_ENDPOINT_URL
+
+Check = Callable[[dict[str, Any]], bool]
+T = TypeVar('T')
+
+
+class BaseTestCase(BaseModel):
+    class Config:
+        arbitrary_types_allowed = True
+
+
+class TestDescription(BaseTestCase):
+    description: str = ''
+
+
+class TestExpectation(BaseTestCase):
+    expected_error: AbstractContextManager = nullcontext()
+    expected_status: int = HTTP_200_OK
+    expected_data: Any = None
+    checks: Iterable[Check] | None = None
+
+
+class BaseTestCase(TestDescription, TestExpectation):
+    data: dict | None = None
+
+
+class RequestTestCase(BaseTestCase):
+    url: str = BASE_ENDPOINT_URL
+    headers: dict | None = None
 
 
 async def bulk_save_models(

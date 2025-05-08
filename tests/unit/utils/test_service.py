@@ -1,14 +1,13 @@
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.user import UserDB
 from src.utils.custom_types import AsyncFunc
-from tests import fixtures
-from tests.fixtures import FakeBaseService
-from tests.utils import compare_dicts_and_db_models
+from tests.fixtures import FakeBaseService, testing_cases
+from tests.utils import BaseTestCase, compare_dicts_and_db_models
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -65,75 +64,55 @@ class TestBaseService:
         assert compare_dicts_and_db_models(users_in_db, [first_user], UserDB)
 
     @pytest.mark.usefixtures('setup_users')
-    @pytest.mark.parametrize(
-        ('values', 'expected_result', 'expectation'),
-        fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_GET_BY_QUERY_ONE_OR_NONE,
-    )
+    @pytest.mark.parametrize('case', testing_cases.TEST_BASE_SERVICE_GET_BY_QUERY_ONE_OR_NONE_PARAMS)
     async def test_get_by_filter_one_or_none(
         self,
-        values: dict,
-        expected_result: UserDB,
-        expectation: Any,
+        case: BaseTestCase,
         transaction_session: AsyncSession,
     ) -> None:
         service = self.__get_service(transaction_session)
-        with expectation:
-            user_in_db: UserModel | None = await service.get_by_filter_one_or_none(**values)
+        with case.expected_error:
+            user_in_db: UserModel | None = await service.get_by_filter_one_or_none(**case.data)
             result = None if not user_in_db else user_in_db.to_schema()
-            assert result == expected_result
+            assert result == case.expected_data
 
     @pytest.mark.usefixtures('setup_users')
-    @pytest.mark.parametrize(
-        ('values', 'expected_result', 'expectation'),
-        fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_GET_BY_QUERY_ALL,
-    )
+    @pytest.mark.parametrize('case', testing_cases.TEST_BASE_SERVICE_GET_BY_QUERY_ALL_PARAMS)
     async def test_get_by_filter_all(
         self,
-        values: dict,
-        expected_result: list,
-        expectation: Any,
+        case: BaseTestCase,
         transaction_session: AsyncSession,
     ) -> None:
         service = self.__get_service(transaction_session)
-        with expectation:
-            users_in_db: Sequence[UserModel] = await service.get_by_filter_all(**values)
-            assert compare_dicts_and_db_models(users_in_db, expected_result, UserDB)
+        with case.expected_error:
+            users_in_db: Sequence[UserModel] = await service.get_by_filter_all(**case.data)
+            assert compare_dicts_and_db_models(users_in_db, case.expected_data, UserDB)
 
     @pytest.mark.usefixtures('setup_users')
-    @pytest.mark.parametrize(
-        ('values', 'expected_result', 'expectation'),
-        fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_UPDATE_ONE_BY_ID,
-    )
+    @pytest.mark.parametrize('case', testing_cases.TEST_BASE_SERVICE_UPDATE_ONE_BY_ID_PARAMS)
     async def test_update_one_by_id(
         self,
-        values: dict,
-        expected_result: UserDB,
-        expectation: Any,
+        case: BaseTestCase,
         transaction_session: AsyncSession,
     ) -> None:
         service = self.__get_service(transaction_session)
-        with expectation:
-            updated_user: UserModel | None = await service.update_one_by_id(values.pop('_id'), **values)
-            assert updated_user.to_schema() == expected_result
+        with case.expected_error:
+            updated_user: UserModel | None = await service.update_one_by_id(case.data.pop('_id'), **case.data)
+            assert updated_user.to_schema() == case.expected_data
 
     @pytest.mark.usefixtures('setup_users')
-    @pytest.mark.parametrize(
-        ('values', 'expected_result', 'expectation'),
-        fixtures.test_cases.PARAMS_TEST_BASE_SERVICE_DELETE_BY_QUERY,
-    )
+    @pytest.mark.parametrize('case', testing_cases.TEST_BASE_SERVICE_DELETE_BY_QUERY_PARAMS)
     async def test_delete_by_filter(
         self,
-        values: dict,
-        expected_result: list,
-        expectation: Any,
+        case: BaseTestCase,
         transaction_session: AsyncSession,
         get_users: AsyncFunc,
     ) -> None:
         service = self.__get_service(transaction_session)
-        with expectation:
-            await service.delete_by_filter(**values)
+        with case.expected_error:
+            await service.delete_by_filter(**case.data)
             users_in_db: Sequence[UserModel] = await get_users()
-            assert compare_dicts_and_db_models(users_in_db, expected_result, UserDB)
+            assert compare_dicts_and_db_models(users_in_db, case.expected_data, UserDB)
 
     @pytest.mark.usefixtures('setup_users')
     async def test_delete_all(

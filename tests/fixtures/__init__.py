@@ -5,8 +5,8 @@ __all__ = [
     'FakeBaseService',
     'FakeUnitOfWork',
     'UserService',
-    'postgres',
-    'test_cases',
+    'db_mocks',
+    'testing_cases',
 ]
 
 from types import TracebackType
@@ -17,7 +17,7 @@ from src.api.v1.services import CompanyService, UserService
 from src.repositories import CompanyRepository, UserRepository
 from src.utils.service import BaseService
 from src.utils.unit_of_work import UnitOfWork
-from tests.fixtures import postgres, test_cases
+from tests.fixtures import db_mocks, testing_cases
 
 
 class FakeUnitOfWork(UnitOfWork):
