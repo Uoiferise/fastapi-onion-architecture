@@ -17,16 +17,16 @@ Check = Callable[[dict[str, Any]], bool]
 T = TypeVar('T')
 
 
-class BaseTestCase(BaseModel):
+class BaseConfig(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
 
-class TestDescription(BaseTestCase):
+class TestDescription(BaseConfig):
     description: str = ''
 
 
-class TestExpectation(BaseTestCase):
+class TestExpectation(BaseConfig):
     expected_error: AbstractContextManager = nullcontext()
     expected_status: int = HTTP_200_OK
     expected_data: Any = None
